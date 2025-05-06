@@ -79,7 +79,10 @@ const ResourcesAdmin = () => {
   // Handlers for creating, updating, and deleting resources
   const createMutation = useMutation({
     mutationFn: (data: ResourceFormData) => 
-      apiRequest('/api/admin/resources', { method: 'POST', body: JSON.stringify(data) }),
+      apiRequest('/api/admin/resources', { 
+        method: 'POST', 
+        body: JSON.stringify(data) 
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/resources'] });
       toast({
@@ -101,7 +104,10 @@ const ResourcesAdmin = () => {
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: number, data: Partial<ResourceFormData> }) => 
-      apiRequest(`/api/admin/resources/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
+      apiRequest(`/api/admin/resources/${id}`, { 
+        method: 'PATCH', 
+        body: JSON.stringify(data) 
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/resources'] });
       toast({
@@ -123,7 +129,9 @@ const ResourcesAdmin = () => {
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/admin/resources/${id}`, { method: 'DELETE' }),
+      apiRequest(`/api/admin/resources/${id}`, { 
+        method: 'DELETE' 
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/resources'] });
       toast({

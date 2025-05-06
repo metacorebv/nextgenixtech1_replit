@@ -63,7 +63,10 @@ const TestimonialsAdmin = () => {
   // Handlers for creating, updating, and deleting testimonials
   const createMutation = useMutation({
     mutationFn: (data: TestimonialFormData) => 
-      apiRequest('/api/admin/testimonials', { method: 'POST', body: JSON.stringify(data) }),
+      apiRequest('/api/admin/testimonials', { 
+        method: 'POST', 
+        body: JSON.stringify(data) 
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/testimonials'] });
       toast({
@@ -85,7 +88,10 @@ const TestimonialsAdmin = () => {
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: number, data: Partial<TestimonialFormData> }) => 
-      apiRequest(`/api/admin/testimonials/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
+      apiRequest(`/api/admin/testimonials/${id}`, { 
+        method: 'PATCH', 
+        body: JSON.stringify(data) 
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/testimonials'] });
       toast({

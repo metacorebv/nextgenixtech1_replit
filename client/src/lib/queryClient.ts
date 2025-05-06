@@ -17,11 +17,16 @@ export async function apiRequest(
   endpoint: string,
   options: ApiRequestOptions,
 ): Promise<Response> {
-  const defaultHeaders = options.body ? { "Content-Type": "application/json" } : {};
+  const headers: Record<string, string> = { ...options.headers || {} };
+  
+  // Add Content-Type header if there's a body and it's not already set
+  if (options.body && !headers["Content-Type"]) {
+    headers["Content-Type"] = "application/json";
+  }
   
   const res = await fetch(endpoint, {
     method: options.method,
-    headers: { ...defaultHeaders, ...options.headers },
+    headers,
     body: options.body,
     credentials: "include",
   });

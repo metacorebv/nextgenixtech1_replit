@@ -70,10 +70,12 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item, index) => (
               !item.dropdown ? (
-                <Link key={index} href={item.href}>
-                  <a className={`font-medium ${isActive(item.href) ? 'text-primary' : 'text-neutral-900 hover:text-primary'} transition-colors`}>
-                    {item.text}
-                  </a>
+                <Link 
+                  key={index} 
+                  href={item.href}
+                  className={`font-medium ${isActive(item.href) ? 'text-primary' : 'text-neutral-900 hover:text-primary'} transition-colors`}
+                >
+                  {item.text}
                 </Link>
               ) : (
                 <DropdownMenu key={index}>
@@ -88,10 +90,11 @@ const Navbar = () => {
                   <DropdownMenuContent align="center" className="w-56 rounded-2xl">
                     {item.dropdown.map((subItem, subIndex) => (
                       <DropdownMenuItem key={subIndex} asChild>
-                        <Link href={subItem.href}>
-                          <a className="block w-full py-2 text-sm text-neutral-900 hover:text-primary transition-colors">
-                            {subItem.text}
-                          </a>
+                        <Link 
+                          href={subItem.href}
+                          className="block w-full py-2 text-sm text-neutral-900 hover:text-primary transition-colors"
+                        >
+                          {subItem.text}
                         </Link>
                       </DropdownMenuItem>
                     ))}
@@ -140,26 +143,25 @@ const Navbar = () => {
               {navItems.map((item, index) => (
                 <div key={index}>
                   {!item.dropdown ? (
-                    <Link href={item.href}>
-                      <a 
-                        className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(item.href) ? 'text-primary' : 'text-neutral-900 hover:text-primary hover:bg-warm-gray-100'} transition-colors`}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {item.text}
-                      </a>
+                    <Link 
+                      href={item.href}
+                      className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(item.href) ? 'text-primary' : 'text-neutral-900 hover:text-primary hover:bg-warm-gray-100'} transition-colors`}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {item.text}
                     </Link>
                   ) : (
                     <>
                       <div className="px-3 py-2 text-base font-medium text-neutral-900">{item.text}</div>
                       <div className="pl-6 space-y-1">
                         {item.dropdown.map((subItem, subIndex) => (
-                          <Link key={subIndex} href={subItem.href}>
-                            <a 
-                              className="block px-3 py-1 rounded-md text-sm font-medium text-neutral-800 hover:text-primary hover:bg-warm-gray-100 transition-colors"
-                              onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                              {subItem.text}
-                            </a>
+                          <Link 
+                            key={subIndex} 
+                            href={subItem.href}
+                            className="block px-3 py-1 rounded-md text-sm font-medium text-neutral-800 hover:text-primary hover:bg-warm-gray-100 transition-colors"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            {subItem.text}
                           </Link>
                         ))}
                       </div>
@@ -167,13 +169,12 @@ const Navbar = () => {
                   )}
                 </div>
               ))}
-              <Link href="/contact">
-                <a 
-                  className="block px-3 py-2 rounded-md text-base font-medium text-white bg-primary hover:bg-primary/90 transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Book a Free Tech Audit
-                </a>
+              <Link 
+                href="/contact"
+                className="block px-3 py-2 rounded-md text-base font-medium text-white bg-primary hover:bg-primary/90 transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Book a Free Tech Audit
               </Link>
             </div>
           </motion.div>

@@ -120,9 +120,9 @@ const Navbar = () => {
           
           {/* CTA Button - Desktop */}
           <div className="hidden md:flex items-center">
-            <Button asChild className="rounded-2xl">
+            <Button asChild className="rounded-2xl bg-gradient-to-r from-primary to-secondary hover:shadow-lg hover:shadow-primary/20 transition-all duration-300">
               <Link href="/contact">
-                Book a Free Tech Audit
+                🎯 Book a Free Tech Audit
               </Link>
             </Button>
           </div>
@@ -152,13 +152,13 @@ const Navbar = () => {
                     </Link>
                   ) : (
                     <>
-                      <div className="px-3 py-2 text-base font-medium text-neutral-900">{item.text}</div>
+                      <div className="px-3 py-2 text-base font-medium text-foreground">{item.text}</div>
                       <div className="pl-6 space-y-1">
                         {item.dropdown.map((subItem, subIndex) => (
                           <Link 
                             key={subIndex} 
                             href={subItem.href}
-                            className="block px-3 py-1 rounded-md text-sm font-medium text-neutral-800 hover:text-primary hover:bg-warm-gray-100 transition-colors"
+                            className="block px-3 py-1 rounded-md text-sm font-medium text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors"
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
                             {subItem.text}
@@ -171,10 +171,10 @@ const Navbar = () => {
               ))}
               <Link 
                 href="/contact"
-                className="block px-3 py-2 rounded-md text-base font-medium text-white bg-primary hover:bg-primary/90 transition-colors"
+                className="block px-3 py-2 rounded-md text-base font-medium text-white bg-gradient-to-r from-primary to-secondary hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Book a Free Tech Audit
+                🎯 Book a Free Tech Audit
               </Link>
             </div>
           </motion.div>

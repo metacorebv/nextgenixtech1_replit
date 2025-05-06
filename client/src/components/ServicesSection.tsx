@@ -113,7 +113,7 @@ const ServicesSection = () => {
   ];
 
   return (
-    <section id="services" className="py-20 bg-warm-gray-50">
+    <section id="services" className="py-20 bg-gradient-to-b from-background via-background/95 to-background/90 relative overflow-hidden">
       <div className="container-custom">
         <motion.div 
           ref={ref}
@@ -124,13 +124,13 @@ const ServicesSection = () => {
         >
           <motion.h2 
             variants={itemVariants}
-            className="text-3xl md:text-4xl font-heading font-bold text-neutral-900"
+            className="text-3xl md:text-4xl font-heading font-bold text-foreground"
           >
-            Our Services
+            Our <span className="text-gradient bg-gradient-to-r from-primary to-secondary">Services</span>
           </motion.h2>
           <motion.p 
             variants={itemVariants}
-            className="mt-4 text-neutral-700 max-w-2xl mx-auto"
+            className="mt-4 text-muted-foreground max-w-2xl mx-auto"
           >
             Strategic technology solutions engineered for business outcomes and future-ready growth.
           </motion.p>
@@ -145,28 +145,41 @@ const ServicesSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 * (index % 3) }}
-              className="bg-white rounded-2xl shadow-md p-8 hover:shadow-lg transition-shadow duration-300"
+              className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-md p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-border/50 group"
             >
-              <div className="w-14 h-14 bg-primary/10 flex items-center justify-center rounded-2xl mb-6">
-                <i className={`fas ${service.icon} text-primary text-2xl`}></i>
+              <div className="w-14 h-14 bg-primary/20 flex items-center justify-center rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-300 group-hover:bg-primary/30">
+                <i className={`fas ${service.icon} text-primary text-2xl group-hover:text-white transition-colors`}></i>
               </div>
-              <h3 className="text-xl font-heading font-semibold mb-3">{service.title}</h3>
-              <p className="text-neutral-700 mb-4">{service.description}</p>
+              <h3 className="text-xl font-heading font-semibold mb-3 group-hover:text-primary transition-colors">{service.title}</h3>
+              <p className="text-muted-foreground mb-4">{service.description}</p>
               <ul className="space-y-2 mb-6">
                 {service.features.map((feature, fIndex) => (
-                  <li key={fIndex} className="flex items-start">
-                    <i className="fas fa-check text-primary mt-1 mr-2"></i>
-                    <span>{feature}</span>
-                  </li>
+                  <motion.li 
+                    key={fIndex}
+                    className="flex items-start"
+                    initial={{ opacity: 0.8 }}
+                    whileHover={{ opacity: 1, x: 2 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <span className="flex-shrink-0 h-5 w-5 bg-primary/20 rounded-full flex items-center justify-center mr-2 group-hover:bg-primary/30 transition-colors">
+                      <i className="fas fa-check text-primary text-xs"></i>
+                    </span>
+                    <span className="text-foreground/80 group-hover:text-foreground transition-colors">{feature}</span>
+                  </motion.li>
                 ))}
               </ul>
-              <Link href={`/services#${service.id}`}>
-                <a className="text-primary hover:text-primary/80 font-medium flex items-center transition-colors">
-                  Learn more
-                  <svg className="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                  </svg>
-                </a>
+              <Link href={`/services#${service.id}`} className="text-primary hover:text-primary/80 font-medium flex items-center transition-colors group-hover:translate-x-1 duration-300">
+                Learn more
+                <motion.svg 
+                  className="w-5 h-5 ml-1" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                  whileHover={{ x: 3 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </motion.svg>
               </Link>
             </motion.div>
           ))}

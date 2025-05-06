@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
@@ -20,10 +20,19 @@ import LegaltechPage from "@/pages/industries/LegaltechPage";
 import LogisticsPage from "@/pages/industries/LogisticsPage";
 import NotFound from "@/pages/not-found";
 
+// Admin pages
+import AdminDashboard from "@/pages/admin/AdminDashboard";
+import TestimonialsAdmin from "@/pages/admin/TestimonialsAdmin";
+import ResourcesAdmin from "@/pages/admin/ResourcesAdmin";
+
 function Router() {
+  const [location] = useLocation();
+  const isAdminPage = location.startsWith('/admin');
+  
   return (
     <AnimatePresence mode="wait">
       <Switch>
+        {/* Public routes */}
         <Route path="/" component={Home} />
         <Route path="/services" component={ServicesPage} />
         <Route path="/why-choose-us" component={WhyChooseUsPage} />
@@ -33,6 +42,13 @@ function Router() {
         <Route path="/industries/healthcare" component={HealthcarePage} />
         <Route path="/industries/legaltech" component={LegaltechPage} />
         <Route path="/industries/logistics" component={LogisticsPage} />
+        
+        {/* Admin routes */}
+        <Route path="/admin" component={AdminDashboard} />
+        <Route path="/admin/testimonials" component={TestimonialsAdmin} />
+        <Route path="/admin/resources" component={ResourcesAdmin} />
+        
+        {/* Fallback route */}
         <Route component={NotFound} />
       </Switch>
     </AnimatePresence>

@@ -1,0 +1,53 @@
+🌑 1. UI Theme & Design Enhancements
+Apply a dark theme site-wide with modern, professional aesthetics.
+
+Update the headlines and CTA buttons to match the design shown in the screenshots provided. Ensure typography, size, and button style follow that look and feel.
+
+🌀 2. UX & Animation Improvements
+Add hover animations: Important cards/sections (e.g., service cards, CTA blocks, testimonials) should pop slightly or animate on hover for interactivity.
+
+Enable revolving animation for the testimonials section (carousel-style or fade-slide loop).
+
+Make the main header menu sticky (fixed at the top) while scrolling, and ensure page content does not overlap with it at any scroll position.
+
+⚙️ 3. Functionality Fixes
+Featured Image URL: Make this optional in the admin panel (not a required field when adding resources or blog posts).
+
+Fix the resource creation bug:
+
+Resolve the validation error: {"code":"invalid_type","expected":"date","received":"string","path":["publishedAt"]}
+→ Ensure the publishedAt field properly parses the input as a date, not a string.
+
+Also fix the 503 Service Unavailable error during resource save — verify backend/API is functioning as expected.
+
+Ensure ARIA warnings are addressed:
+→ e.g., Missing 'Description' or 'aria-describedby' for {DialogContent} — provide proper accessibility attributes.
+
+➕ 4. Content & Structural Additions
+Add one more service section to the Services page:
+
+Digital Marketing & Social Media Strategy
+USP: “Performance-led marketing powered by data, automation, and AI.”
+
+Description: “From AI-powered ad targeting to cross-platform growth strategies, we help brands increase visibility, engagement, and ROI across digital channels.”
+
+CTA: “📈 Let’s Audit Your Digital Funnel — Free Strategy Session”
+
+Ensure this service is also listed in any dropdown menus, homepage highlights, and industry landing page generation logic.
+
+🎯 5. CTAs – Section-Specific
+Replace generic CTAs with more strategic ones per section:
+
+Homepage Hero: “🎯 Book a Free Tech Audit — Get an MVP Delivered, On Us”
+
+Cloud Services Section: “🔍 Request a Free Cloud Cost Review”
+
+AI Section: “🤖 Map AI Into Your Workflow — Free Demo”
+
+Security Section: “🛡️ Get a Zero-Trust Readiness Snapshot”
+
+Digital Marketing Section: “📈 Let’s Audit Your Digital Funnel”
+
+Contact Page: “🤔 Not Ready to Book? Ask Us Anything — No Strings Attached”
+
+Ensure each CTA is contextually matched and styled consistently.

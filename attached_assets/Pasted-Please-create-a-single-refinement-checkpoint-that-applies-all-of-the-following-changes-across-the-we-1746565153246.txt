@@ -1,0 +1,71 @@
+Please create a single refinement checkpoint that applies all of the following changes across the website and admin functionality:
+
+🌑 1. Dark Theme + Visual Styling
+Apply a dark theme across the website for a premium, tech-forward look.
+
+Update headlines and CTA buttons to match the visual style shown in the screenshots. Focus on modern typography, strong contrast, and bold color accents.
+
+🌀 2. UX & Animation Enhancements
+Add hover animations on service cards, CTA blocks, and testimonials.
+
+Implement revolving/fading animation for testimonials (auto-carousel).
+
+Make the main header menu sticky and ensure no content overlaps with it while scrolling.
+
+⚙️ 3. Admin Fixes & Bug Resolution
+Make “Featured Image URL” optional in the content form.
+
+Fix the resource creation error:
+
+Correct publishedAt field input: should be parsed as a valid Date, not a string.
+
+Resolve 400 and 503 errors from resource API.
+
+Address aria-describedby warning in the dialog component for accessibility compliance.
+
+➕ 4. New Service: Digital Marketing
+Add the following to the Services page and all applicable menus:
+
+Title: Digital Marketing & Social Media Strategy
+
+USP: “Performance-led marketing powered by data, automation, and AI.”
+
+Description: “We deliver cross-platform campaigns, AI-powered ad targeting, and ROI-focused growth strategies for scalable impact.”
+
+CTA: “📈 Let’s Audit Your Digital Funnel — Free Strategy Session”
+
+🎯 5. Contextual CTAs by Section
+Apply distinct CTAs for each section to increase engagement:
+
+Homepage Hero: “🎯 Book a Free Tech Audit — Get an MVP Delivered, On Us”
+
+Cloud Services: “🔍 Request a Free Cloud Cost Review”
+
+AI Integration: “🤖 Map AI Into Your Workflow — Free Demo”
+
+Security: “🛡️ Get a Zero-Trust Readiness Snapshot”
+
+Digital Marketing: “📈 Let’s Audit Your Digital Funnel”
+
+Contact Page: “🤔 Not Ready to Book? Ask Us Anything — No Strings Attached”
+
+📅 6. Smart Contact Form + Calendly Integration
+Embed a Calendly calendar in the Contact page (or a separate Booking page) so users can book a call directly from the website. See screenshot for inspiration.
+
+Update the contact/intake form to include the following mandatory fields:
+
+Full Name
+
+Email
+
+Phone Number
+
+Monthly Revenue (optional)
+
+Budget or Financial Goals for Tech/AI Investment (checkbox format like screenshot)
+
+Readiness to start (radio or checkbox)
+
+Free text box for project details/questions
+
+Form must validate and store this data securely, with a confirmation message upon submission.

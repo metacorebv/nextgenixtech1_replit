@@ -3,6 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 
 import Navbar from "@/components/Navbar";
@@ -58,17 +59,19 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <motion.div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-grow">
-            <Router />
-          </main>
-          <Footer />
-          <FloatingCTA />
-        </motion.div>
-        <Toaster />
-      </TooltipProvider>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+        <TooltipProvider>
+          <motion.div className="flex flex-col min-h-screen">
+            <Navbar />
+            <main className="flex-grow">
+              <Router />
+            </main>
+            <Footer />
+            <FloatingCTA />
+          </motion.div>
+          <Toaster />
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

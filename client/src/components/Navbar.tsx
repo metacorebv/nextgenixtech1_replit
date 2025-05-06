@@ -52,7 +52,7 @@ const Navbar = () => {
 
   return (
     <motion.nav 
-      className="bg-warm-gray-50 border-b border-warm-gray-200 sticky top-0 z-50 shadow-sm"
+      className="bg-background border-b border-border sticky top-0 z-50 shadow-md backdrop-blur-sm"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
@@ -62,7 +62,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center">
               <Logo />
-              <span className="ml-2 text-xl font-heading font-semibold text-neutral-900">NextGenixTech</span>
+              <span className="ml-2 text-xl font-heading font-semibold text-foreground">NextGenixTech</span>
             </Link>
           </div>
           
@@ -73,14 +73,14 @@ const Navbar = () => {
                 <Link 
                   key={index} 
                   href={item.href}
-                  className={`font-medium ${isActive(item.href) ? 'text-primary' : 'text-neutral-900 hover:text-primary'} transition-colors`}
+                  className={`font-medium ${isActive(item.href) ? 'text-primary' : 'text-foreground hover:text-primary'} transition-colors`}
                 >
                   {item.text}
                 </Link>
               ) : (
                 <DropdownMenu key={index}>
                   <DropdownMenuTrigger asChild>
-                    <button className={`font-medium ${location.includes(item.text.toLowerCase()) ? 'text-primary' : 'text-neutral-900 hover:text-primary'} transition-colors flex items-center`}>
+                    <button className={`font-medium ${location.includes(item.text.toLowerCase()) ? 'text-primary' : 'text-foreground hover:text-primary'} transition-colors flex items-center`}>
                       {item.text}
                       <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
@@ -108,7 +108,7 @@ const Navbar = () => {
           <div className="flex items-center md:hidden">
             <button 
               type="button" 
-              className="inline-flex items-center justify-center p-2 rounded-md text-neutral-900 hover:text-primary hover:bg-warm-gray-100 transition-colors"
+              className="inline-flex items-center justify-center p-2 rounded-md text-foreground hover:text-primary hover:bg-muted/50 transition-colors"
               onClick={toggleMobileMenu}
               aria-expanded={isMobileMenuOpen}
             >
@@ -139,13 +139,13 @@ const Navbar = () => {
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-warm-gray-50">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background/95 backdrop-blur-sm border-t border-border">
               {navItems.map((item, index) => (
                 <div key={index}>
                   {!item.dropdown ? (
                     <Link 
                       href={item.href}
-                      className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(item.href) ? 'text-primary' : 'text-neutral-900 hover:text-primary hover:bg-warm-gray-100'} transition-colors`}
+                      className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(item.href) ? 'text-primary' : 'text-foreground hover:text-primary hover:bg-muted/50'} transition-colors`}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {item.text}

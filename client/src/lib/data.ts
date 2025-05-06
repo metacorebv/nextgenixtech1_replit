@@ -1,8 +1,8 @@
 import { 
-  Testimonial, 
-  Service, 
-  Industry, 
-  Resource, 
+  TestimonialUI as Testimonial, 
+  ServiceUI as Service, 
+  IndustryUI as Industry, 
+  ResourceUI as Resource, 
   Differentiator,
   NavItem,
   SiteConfig

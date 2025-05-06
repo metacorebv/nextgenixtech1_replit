@@ -3,7 +3,20 @@ import { motion, useAnimation, useInView } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { getQueryFn } from "../lib/queryClient";
 import { testimonials as defaultTestimonials } from "../lib/data";
-import { Testimonial } from "../lib/types";
+import { Testimonial, TestimonialUI } from "../lib/types";
+
+// Helper function to map API testimonial to UI format
+const mapApiToUiTestimonial = (apiTestimonial: Testimonial): TestimonialUI => {
+  return {
+    name: apiTestimonial.name,
+    position: apiTestimonial.position,
+    company: apiTestimonial.company,
+    metric: apiTestimonial.metric || "",
+    title: apiTestimonial.metricTitle || "",
+    description: apiTestimonial.testimonial,
+    image: apiTestimonial.imageUrl || "",
+  };
+};
 
 const TestimonialsSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -18,8 +31,12 @@ const TestimonialsSection = () => {
     enabled: true,
   });
   
-  // Use API testimonials if available, otherwise fall back to default data
-  const testimonials = (apiTestimonials?.data || defaultTestimonials);
+  // Process API testimonials to UI format if available, otherwise use default data
+  const testimonials: TestimonialUI[] = apiTestimonials?.data 
+    ? apiTestimonials.data
+        .filter(t => t.isActive)
+        .map(mapApiToUiTestimonial)
+    : defaultTestimonials;
 
   useEffect(() => {
     if (isInView) {

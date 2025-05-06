@@ -1,431 +1,602 @@
 import { useState } from 'react';
+import { Link } from 'wouter';
+import { motion } from 'framer-motion';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getQueryFn, apiRequest } from '../../lib/queryClient';
 import { Resource } from '../../lib/types';
-import { resourceFilters, resourceTypeFilters } from '../../lib/data';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useToast } from '../../hooks/use-toast';
+import { resourceFilters } from '../../lib/data';
 
-const resourceSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  slug: z.string().min(1, "Slug is required").regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens"),
-  description: z.string().min(10, "Description must be at least 10 characters"),
-  content: z.string().min(50, "Content must be at least 50 characters"),
-  imageUrl: z.string().min(1, "Image URL is required"),
-  categories: z.array(z.string()).min(1, "At least one category is required"),
-  type: z.enum(["article", "whitepaper", "case-study"], {
-    errorMap: () => ({ message: "Type must be article, whitepaper, or case-study" }),
-  }),
-  publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/, "Format must be YYYY-MM-DDTHH:MM"),
-});
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-type ResourceFormValues = z.infer<typeof resourceSchema>;
+interface ResourceFormData {
+  title: string;
+  slug: string;
+  description: string;
+  content: string;
+  imageUrl: string;
+  categories: string[];
+  type: "article" | "whitepaper" | "case-study";
+  publishedAt: string;
+}
 
 const ResourcesAdmin = () => {
-  const [isAdding, setIsAdding] = useState(false);
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState('all');
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+  const [selectedResourceId, setSelectedResourceId] = useState<number | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [formData, setFormData] = useState<ResourceFormData>({
+    title: '',
+    slug: '',
+    description: '',
+    content: '',
+    imageUrl: '',
+    categories: [],
+    type: 'article',
+    publishedAt: new Date().toISOString().split('T')[0],
+  });
+
   const queryClient = useQueryClient();
-
-  const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<ResourceFormValues>({
-    resolver: zodResolver(resourceSchema),
-    defaultValues: {
-      categories: [],
-      type: "article",
-      publishedAt: new Date().toISOString().slice(0, 16),
-    }
-  });
-
-  const { data: resources, isLoading, error } = useQuery({
+  
+  // Fetch resources
+  const { data: apiData, isLoading, error } = useQuery({
     queryKey: ['/api/resources'],
-    queryFn: getQueryFn<{ data: Resource[] }>({ on401: "throw" }),
+    queryFn: getQueryFn<{ data: Resource[] }>({ on401: 'returnNull' }),
+    refetchOnWindowFocus: false,
   });
 
+  const resources = apiData?.data || [];
+
+  // Filter resources by type based on active tab
+  const filteredResources = activeTab === 'all' 
+    ? resources 
+    : resources.filter(resource => resource.type === activeTab);
+
+  // Handlers for creating, updating, and deleting resources
   const createMutation = useMutation({
-    mutationFn: (data: ResourceFormValues) => 
-      apiRequest('/api/admin/resources', 'POST', data),
+    mutationFn: (data: ResourceFormData) => 
+      apiRequest('/api/admin/resources', { method: 'POST', body: JSON.stringify(data) }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/resources'] });
-      setIsAdding(false);
-      reset();
-      setSelectedCategories([]);
+      toast({
+        title: "Success!",
+        description: "Resource created successfully.",
+      });
+      setIsAddDialogOpen(false);
+      resetForm();
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to create resource. Please try again.",
+        variant: "destructive",
+      });
+      console.error('Create error:', error);
     }
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: number, data: ResourceFormValues }) => 
-      apiRequest(`/api/admin/resources/${id}`, 'PATCH', data),
+    mutationFn: ({ id, data }: { id: number, data: Partial<ResourceFormData> }) => 
+      apiRequest(`/api/admin/resources/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/resources'] });
-      setEditingId(null);
-      reset();
-      setSelectedCategories([]);
+      toast({
+        title: "Success!",
+        description: "Resource updated successfully.",
+      });
+      setIsEditDialogOpen(false);
+      resetForm();
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to update resource. Please try again.",
+        variant: "destructive",
+      });
+      console.error('Update error:', error);
     }
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/admin/resources/${id}`, 'DELETE'),
+      apiRequest(`/api/admin/resources/${id}`, { method: 'DELETE' }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/resources'] });
+      toast({
+        title: "Success!",
+        description: "Resource deleted successfully.",
+      });
+      setIsDeleteDialogOpen(false);
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to delete resource. Please try again.",
+        variant: "destructive",
+      });
+      console.error('Delete error:', error);
     }
   });
 
-  const onSubmit = (data: ResourceFormValues) => {
-    if (editingId !== null) {
-      updateMutation.mutate({ id: editingId, data });
-    } else {
-      createMutation.mutate(data);
-    }
-  };
-
-  const startEdit = (resource: Resource) => {
-    setEditingId(resource.id);
-    reset({
+  const handleEdit = (resource: Resource) => {
+    setSelectedResourceId(resource.id);
+    setFormData({
       title: resource.title,
       slug: resource.slug,
       description: resource.description,
       content: resource.content,
       imageUrl: resource.imageUrl,
       categories: resource.categories,
-      type: resource.type as "article" | "whitepaper" | "case-study",
-      publishedAt: new Date(resource.publishedAt).toISOString().slice(0, 16),
+      type: resource.type,
+      publishedAt: new Date(resource.publishedAt).toISOString().split('T')[0],
     });
     setSelectedCategories(resource.categories);
-    setIsAdding(true);
+    setIsEditDialogOpen(true);
   };
 
-  const cancelEdit = () => {
-    setIsAdding(false);
-    setEditingId(null);
-    reset();
+  const handleView = (resource: Resource) => {
+    setSelectedResourceId(resource.id);
+    setFormData({
+      title: resource.title,
+      slug: resource.slug,
+      description: resource.description,
+      content: resource.content,
+      imageUrl: resource.imageUrl,
+      categories: resource.categories,
+      type: resource.type,
+      publishedAt: new Date(resource.publishedAt).toISOString().split('T')[0],
+    });
+    setIsViewDialogOpen(true);
+  };
+
+  const handleDelete = (id: number) => {
+    setSelectedResourceId(id);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (selectedResourceId) {
+      deleteMutation.mutate(selectedResourceId);
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      title: '',
+      slug: '',
+      description: '',
+      content: '',
+      imageUrl: '',
+      categories: [],
+      type: 'article',
+      publishedAt: new Date().toISOString().split('T')[0],
+    });
     setSelectedCategories([]);
+    setSelectedResourceId(null);
   };
 
-  const handleCategoryChange = (category: string) => {
-    const updatedCategories = selectedCategories.includes(category)
-      ? selectedCategories.filter(c => c !== category)
-      : [...selectedCategories, category];
-    
-    setSelectedCategories(updatedCategories);
-    setValue('categories', updatedCategories);
+  const openAddDialog = () => {
+    resetForm();
+    setIsAddDialogOpen(true);
   };
 
-  const generateSlug = () => {
-    const title = watch('title');
-    if (title) {
-      const slug = title
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, '') // Remove special chars
-        .replace(/\s+/g, '-') // Replace spaces with -
-        .replace(/-+/g, '-'); // Replace multiple - with single -
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleCategoryToggle = (category: string) => {
+    setSelectedCategories(prev => {
+      const newCategories = prev.includes(category)
+        ? prev.filter(c => c !== category)
+        : [...prev, category];
       
-      setValue('slug', slug);
+      setFormData(prevForm => ({
+        ...prevForm,
+        categories: newCategories
+      }));
+      
+      return newCategories;
+    });
+  };
+  
+  const generateSlug = () => {
+    if (formData.title) {
+      const slug = formData.title
+        .toLowerCase()
+        .replace(/[^\w\s]/gi, '')
+        .replace(/\s+/g, '-');
+      setFormData(prev => ({ ...prev, slug }));
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.title || !formData.description || !formData.type) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Generate slug if empty
+    if (!formData.slug) {
+      generateSlug();
+    }
+    
+    if (isEditDialogOpen && selectedResourceId) {
+      updateMutation.mutate({ id: selectedResourceId, data: formData });
+    } else {
+      createMutation.mutate(formData);
     }
   };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return new Intl.DateTimeFormat('en-US', { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric' 
     }).format(date);
   };
 
-  return (
-    <div className="container-custom py-10">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="mb-8"
-      >
-        <h1 className="text-3xl font-heading font-bold mb-2">Content Management</h1>
-        <p className="text-neutral-600">Add, edit, or remove articles, case studies, and whitepapers.</p>
-      </motion.div>
+  const getTypeLabel = (type: string) => {
+    switch (type) {
+      case 'article': return 'Article';
+      case 'whitepaper': return 'Whitepaper';
+      case 'case-study': return 'Case Study';
+      default: return type;
+    }
+  };
 
-      <div className="mb-6 flex justify-between items-center">
-        <div>
-          {!isAdding && (
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-primary text-white px-5 py-2 rounded-lg font-medium flex items-center"
-              onClick={() => setIsAdding(true)}
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case 'article': return 'bg-sky-100 text-sky-700';
+      case 'whitepaper': return 'bg-emerald-100 text-emerald-700';
+      case 'case-study': return 'bg-purple-100 text-purple-700';
+      default: return 'bg-neutral-100 text-neutral-700';
+    }
+  };
+
+  const contentPreview = (content: string, maxLength = 150) => {
+    if (!content) return '';
+    // Check if it's a Notion URL
+    if (content.includes('notion.so')) {
+      return `[Embedded Notion document: ${content}]`;
+    }
+    
+    // Remove HTML tags if present
+    const textContent = content.replace(/<[^>]*>?/gm, '');
+    
+    return textContent.length > maxLength
+      ? `${textContent.substring(0, maxLength)}...`
+      : textContent;
+  };
+
+  const renderForm = () => (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="title">Title *</Label>
+        <Input
+          id="title"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          placeholder="AI Readiness in Healthcare: A 2025 Roadmap"
+          required
+        />
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor="slug">URL Slug *</Label>
+          <div className="flex">
+            <Input
+              id="slug"
+              name="slug"
+              value={formData.slug}
+              onChange={handleChange}
+              placeholder="ai-readiness-healthcare-2025"
+              className="rounded-r-none"
+              required
+            />
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={generateSlug}
+              className="rounded-l-none border-l-0"
             >
-              <i className="fas fa-plus mr-2"></i> Add New Content
-            </motion.button>
-          )}
+              Generate
+            </Button>
+          </div>
+          <p className="text-xs text-neutral-500">
+            Used in the resource URL: /resources/<strong>{formData.slug || 'slug'}</strong>
+          </p>
         </div>
         
-        <div className="text-sm text-neutral-500">
-          {resources?.data?.length || 0} resources found
+        <div className="space-y-2">
+          <Label htmlFor="type">Content Type *</Label>
+          <Select
+            value={formData.type}
+            onValueChange={(value) => handleSelectChange('type', value)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select content type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="article">Article</SelectItem>
+              <SelectItem value="whitepaper">Whitepaper</SelectItem>
+              <SelectItem value="case-study">Case Study</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
-      <AnimatePresence>
-        {isAdding && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="bg-neutral-100 p-6 rounded-xl shadow-md mb-8 overflow-hidden"
-          >
-            <h2 className="text-xl font-heading font-bold mb-4">
-              {editingId !== null ? 'Edit Content' : 'Add New Content'}
-            </h2>
-            
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Title*</label>
-                    <input
-                      type="text"
-                      {...register('title')}
-                      onBlur={generateSlug}
-                      className="w-full p-2 border border-neutral-300 rounded-lg focus:ring-primary focus:border-primary"
-                      placeholder="Title of your content"
-                    />
-                    {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>}
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Slug*</label>
-                    <div className="flex">
-                      <input
-                        type="text"
-                        {...register('slug')}
-                        className="w-full p-2 border border-neutral-300 rounded-lg focus:ring-primary focus:border-primary"
-                        placeholder="url-friendly-title"
-                      />
-                      <button
-                        type="button"
-                        onClick={generateSlug}
-                        className="ml-2 px-3 py-2 bg-neutral-200 rounded-lg hover:bg-neutral-300 transition-colors"
-                        title="Generate from title"
-                      >
-                        <i className="fas fa-sync-alt"></i>
-                      </button>
-                    </div>
-                    {errors.slug && <p className="text-red-500 text-xs mt-1">{errors.slug.message}</p>}
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Image URL*</label>
-                    <input
-                      type="text"
-                      {...register('imageUrl')}
-                      className="w-full p-2 border border-neutral-300 rounded-lg focus:ring-primary focus:border-primary"
-                      placeholder="https://example.com/image.jpg"
-                    />
-                    {errors.imageUrl && <p className="text-red-500 text-xs mt-1">{errors.imageUrl.message}</p>}
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Published Date*</label>
-                    <input
-                      type="datetime-local"
-                      {...register('publishedAt')}
-                      className="w-full p-2 border border-neutral-300 rounded-lg focus:ring-primary focus:border-primary"
-                    />
-                    {errors.publishedAt && <p className="text-red-500 text-xs mt-1">{errors.publishedAt.message}</p>}
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Type*</label>
-                    <select
-                      {...register('type')}
-                      className="w-full p-2 border border-neutral-300 rounded-lg focus:ring-primary focus:border-primary"
-                    >
-                      <option value="article">Article</option>
-                      <option value="whitepaper">Whitepaper</option>
-                      <option value="case-study">Case Study</option>
-                    </select>
-                    {errors.type && <p className="text-red-500 text-xs mt-1">{errors.type.message}</p>}
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Categories*</label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {resourceFilters
-                        .filter(filter => filter.id !== 'all')
-                        .map(category => (
-                          <div key={category.id} className="flex items-center">
-                            <input
-                              type="checkbox"
-                              id={`category-${category.id}`}
-                              checked={selectedCategories.includes(category.id)}
-                              onChange={() => handleCategoryChange(category.id)}
-                              className="h-4 w-4 text-primary focus:ring-primary border-neutral-300 rounded"
-                            />
-                            <label
-                              htmlFor={`category-${category.id}`}
-                              className="ml-2 text-sm text-neutral-700"
-                            >
-                              {category.label}
-                            </label>
-                          </div>
-                        ))}
-                    </div>
-                    {errors.categories && <p className="text-red-500 text-xs mt-1">{errors.categories.message}</p>}
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Description* (Short summary)</label>
-                    <textarea
-                      {...register('description')}
-                      rows={3}
-                      className="w-full p-2 border border-neutral-300 rounded-lg focus:ring-primary focus:border-primary"
-                      placeholder="Brief description that will appear in cards and listings"
-                    ></textarea>
-                    {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>}
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Content* (Full article or case study)</label>
-                    <textarea
-                      {...register('content')}
-                      rows={10}
-                      className="w-full p-2 border border-neutral-300 rounded-lg focus:ring-primary focus:border-primary"
-                      placeholder="Full content that will be displayed on the detailed page"
-                    ></textarea>
-                    <p className="text-xs text-neutral-500 mt-1">For Notion integration, paste the Notion page link or export here.</p>
-                    {errors.content && <p className="text-red-500 text-xs mt-1">{errors.content.message}</p>}
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex justify-end space-x-3 pt-4">
-                <button
-                  type="button"
-                  onClick={cancelEdit}
-                  className="px-4 py-2 text-neutral-700 bg-neutral-200 rounded-lg hover:bg-neutral-300 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
-                  disabled={createMutation.isPending || updateMutation.isPending}
-                >
-                  {createMutation.isPending || updateMutation.isPending ? (
-                    <span className="flex items-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Saving...
-                    </span>
-                  ) : editingId !== null ? 'Update Content' : 'Publish Content'}
-                </button>
-              </div>
-            </form>
-          </motion.div>
+      <div className="space-y-2">
+        <Label htmlFor="description">Description *</Label>
+        <Textarea
+          id="description"
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          placeholder="A brief description of the resource (displayed in listings)"
+          rows={3}
+          required
+        />
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="imageUrl">Featured Image URL *</Label>
+        <Input
+          id="imageUrl"
+          name="imageUrl"
+          value={formData.imageUrl}
+          onChange={handleChange}
+          placeholder="https://example.com/image.jpg"
+          required
+        />
+        <p className="text-xs text-neutral-500">
+          For best results, use a 16:9 ratio image (1200×675 pixels minimum)
+        </p>
+        
+        {formData.imageUrl && (
+          <div className="mt-2 relative rounded-md overflow-hidden h-32 bg-neutral-100">
+            <img
+              src={formData.imageUrl}
+              alt="Featured image preview"
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = 'https://placehold.co/1200x675/F3F4F6/A1A1AA?text=Invalid+Image+URL';
+              }}
+            />
+          </div>
         )}
-      </AnimatePresence>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Categories *</Label>
+        <div className="flex flex-wrap gap-2 mt-2">
+          {resourceFilters.filter(filter => filter.id !== 'all').map(category => (
+            <Badge
+              key={category.id}
+              variant={selectedCategories.includes(category.id) ? "default" : "outline"}
+              className="cursor-pointer"
+              onClick={() => handleCategoryToggle(category.id)}
+            >
+              {category.label}
+            </Badge>
+          ))}
+        </div>
+        {selectedCategories.length === 0 && (
+          <p className="text-xs text-destructive mt-1">
+            Please select at least one category
+          </p>
+        )}
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="publishedAt">Publication Date *</Label>
+        <Input
+          id="publishedAt"
+          name="publishedAt"
+          type="date"
+          value={formData.publishedAt}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="content">Content *</Label>
+        <div className="flex items-center mb-2">
+          <p className="text-xs text-neutral-500 flex-1">
+            Enter full content, HTML, or a Notion page URL
+          </p>
+        </div>
+        <Textarea
+          id="content"
+          name="content"
+          value={formData.content}
+          onChange={handleChange}
+          placeholder="Enter full content or paste a Notion URL"
+          rows={10}
+          required
+        />
+      </div>
+    </form>
+  );
+
+  return (
+    <div className="container-custom py-12">
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-3xl font-heading font-bold">Resources Manager</h1>
+          <p className="text-neutral-600">
+            Manage articles, whitepapers, and case studies that appear in the Resources section.
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline" asChild>
+            <Link href="/admin">
+              <i className="fas fa-arrow-left mr-2"></i>
+              Back to Dashboard
+            </Link>
+          </Button>
+          <Button onClick={openAddDialog}>
+            <i className="fas fa-plus mr-2"></i>
+            Add Resource
+          </Button>
+        </div>
+      </div>
+
+      <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="mb-8">
+        <TabsList>
+          <TabsTrigger value="all">All</TabsTrigger>
+          <TabsTrigger value="article">Articles</TabsTrigger>
+          <TabsTrigger value="whitepaper">Whitepapers</TabsTrigger>
+          <TabsTrigger value="case-study">Case Studies</TabsTrigger>
+        </TabsList>
+      </Tabs>
 
       {isLoading ? (
-        <div className="flex justify-center py-10">
+        <div className="flex justify-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
         </div>
       ) : error ? (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-          <p>Error loading resources. Please try again.</p>
+        <div className="rounded-lg bg-destructive/10 p-6 text-center">
+          <h3 className="mb-2 text-lg font-medium">Error Loading Resources</h3>
+          <p className="text-neutral-600">
+            There was a problem loading the resources. Please refresh the page or try again later.
+          </p>
         </div>
-      ) : resources?.data?.length === 0 ? (
-        <div className="text-center py-10 bg-neutral-50 rounded-xl border border-neutral-200">
-          <div className="text-5xl mb-4 text-neutral-300">
-            <i className="fas fa-file-alt"></i>
+      ) : filteredResources.length === 0 ? (
+        <div className="rounded-lg border border-dashed p-8 text-center">
+          <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-neutral-100 flex items-center justify-center">
+            <i className="fas fa-file-alt text-2xl text-neutral-400"></i>
           </div>
-          <h3 className="text-lg font-medium mb-1">No content yet</h3>
-          <p className="text-neutral-500 mb-4">Add your first article, case study, or whitepaper</p>
-          {!isAdding && (
-            <button
-              onClick={() => setIsAdding(true)}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
-            >
-              Add Content
-            </button>
-          )}
+          <h3 className="mb-2 text-lg font-medium">No Resources Yet</h3>
+          <p className="mb-4 text-neutral-600">
+            {activeTab === 'all' 
+              ? "You haven't added any resources yet. Resources help showcase your expertise and drive engagement."
+              : `You haven't added any ${activeTab === 'case-study' ? 'case studies' : activeTab + 's'} yet.`}
+          </p>
+          <Button onClick={openAddDialog}>
+            <i className="fas fa-plus mr-2"></i>
+            Add Your First {activeTab === 'all' ? 'Resource' : getTypeLabel(activeTab)}
+          </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {resources?.data?.map((resource) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {filteredResources.map((resource) => (
             <motion.div
               key={resource.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="bg-white border border-neutral-200 rounded-xl shadow-sm overflow-hidden"
+              className="border rounded-xl overflow-hidden"
             >
-              <div className="h-40 overflow-hidden">
+              <div className="relative h-40 bg-neutral-100">
                 {resource.imageUrl ? (
                   <img 
                     src={resource.imageUrl} 
                     alt={resource.title}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://placehold.co/1200x675/F3F4F6/A1A1AA?text=Missing+Image';
+                    }}
                   />
                 ) : (
-                  <div className="w-full h-full bg-neutral-200 flex items-center justify-center">
-                    <i className="fas fa-image text-neutral-400 text-4xl"></i>
+                  <div className="w-full h-full flex items-center justify-center bg-neutral-100">
+                    <i className="fas fa-image text-neutral-400 text-3xl"></i>
                   </div>
                 )}
+                <Badge className={`absolute top-3 right-3 ${getTypeColor(resource.type)}`}>
+                  {getTypeLabel(resource.type)}
+                </Badge>
               </div>
+              
               <div className="p-5">
-                <div className="flex flex-wrap gap-2 mb-3">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                    ${resource.type === 'article' ? 'bg-blue-100 text-blue-800' : 
-                      resource.type === 'whitepaper' ? 'bg-purple-100 text-purple-800' : 
-                      'bg-green-100 text-green-800'}`}
-                  >
-                    {resource.type === 'article' ? 'Article' : 
-                     resource.type === 'whitepaper' ? 'Whitepaper' : 'Case Study'}
-                  </span>
-                  {resource.categories.slice(0, 2).map((category, idx) => (
-                    <span key={idx} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-neutral-100 text-neutral-800">
+                <div className="flex flex-wrap gap-1 mb-2">
+                  {resource.categories.slice(0, 3).map((category, idx) => (
+                    <Badge key={idx} variant="outline" className="text-xs">
                       {resourceFilters.find(f => f.id === category)?.label || category}
-                    </span>
+                    </Badge>
                   ))}
-                  {resource.categories.length > 2 && (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-neutral-100 text-neutral-800">
-                      +{resource.categories.length - 2} more
-                    </span>
+                  {resource.categories.length > 3 && (
+                    <Badge variant="outline" className="text-xs">
+                      +{resource.categories.length - 3} more
+                    </Badge>
                   )}
                 </div>
                 
-                <h3 className="font-medium text-lg mb-1">{resource.title}</h3>
-                <p className="text-neutral-500 text-xs mb-2">Published: {formatDate(resource.publishedAt)}</p>
-                <p className="text-neutral-600 text-sm line-clamp-2 mb-4">{resource.description}</p>
+                <h3 className="text-lg font-semibold mb-1 line-clamp-2">{resource.title}</h3>
+                <p className="text-sm text-neutral-600 mb-3 line-clamp-2">{resource.description}</p>
                 
-                <div className="flex justify-between pt-4 border-t border-neutral-100">
-                  <button
-                    onClick={() => startEdit(resource)}
-                    className="text-sm text-primary hover:text-primary/80 transition-colors"
-                  >
-                    <i className="fas fa-edit mr-1"></i> Edit
-                  </button>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-neutral-500">
+                    Published: {formatDate(resource.publishedAt)}
+                  </span>
                   
-                  <button
-                    onClick={() => {
-                      if (confirm('Are you sure you want to delete this resource?')) {
-                        deleteMutation.mutate(resource.id);
-                      }
-                    }}
-                    className="text-sm text-red-600 hover:text-red-800 transition-colors"
-                    disabled={deleteMutation.isPending}
-                  >
-                    {deleteMutation.isPending ? (
-                      <span>Deleting...</span>
-                    ) : (
-                      <><i className="fas fa-trash-alt mr-1"></i> Delete</>
-                    )}
-                  </button>
+                  <div className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => handleView(resource)}
+                      title="View"
+                    >
+                      <i className="fas fa-eye text-neutral-500"></i>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => handleEdit(resource)}
+                      title="Edit"
+                    >
+                      <i className="fas fa-edit text-neutral-500"></i>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => handleDelete(resource.id)}
+                      title="Delete"
+                    >
+                      <i className="fas fa-trash text-destructive"></i>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -433,20 +604,148 @@ const ResourcesAdmin = () => {
         </div>
       )}
 
-      <div className="mt-10 bg-neutral-50 border border-neutral-200 rounded-lg p-6">
-        <h2 className="text-xl font-heading font-bold mb-2">Admin Instructions</h2>
-        <p className="text-neutral-600 mb-4">
-          This page allows you to manage content resources displayed on the website. Here's how to use it:
-        </p>
-        <ul className="list-disc pl-5 space-y-2 text-neutral-600">
-          <li><strong>Adding content:</strong> Click the "Add New Content" button and fill out the form with all required fields.</li>
-          <li><strong>Notion integration:</strong> For content from Notion, you can paste the Notion page URL or exported content into the content field.</li>
-          <li><strong>Categories:</strong> Select at least one category that applies to your content to help with filtering and organization.</li>
-          <li><strong>Slug:</strong> This becomes part of the URL (e.g., /resources/your-slug). Use the auto-generate button to create a slug from the title.</li>
-          <li><strong>Types:</strong> Choose whether your content is an article, whitepaper, or case study to ensure proper categorization.</li>
-          <li><strong>Images:</strong> For best results, use high-quality landscape images with a 16:9 aspect ratio.</li>
-        </ul>
-      </div>
+      {/* Add Dialog */}
+      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+        <DialogContent className="sm:max-w-[800px]">
+          <DialogHeader>
+            <DialogTitle>Add New Resource</DialogTitle>
+          </DialogHeader>
+          {renderForm()}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>Cancel</Button>
+            <Button onClick={handleSubmit} disabled={createMutation.isPending}>
+              {createMutation.isPending ? (
+                <>
+                  <div className="animate-spin mr-2 h-4 w-4 border-2 border-b-transparent rounded-full"></div>
+                  Saving...
+                </>
+              ) : (
+                <>Add Resource</>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="sm:max-w-[800px]">
+          <DialogHeader>
+            <DialogTitle>Edit Resource</DialogTitle>
+          </DialogHeader>
+          {renderForm()}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
+            <Button onClick={handleSubmit} disabled={updateMutation.isPending}>
+              {updateMutation.isPending ? (
+                <>
+                  <div className="animate-spin mr-2 h-4 w-4 border-2 border-b-transparent rounded-full"></div>
+                  Updating...
+                </>
+              ) : (
+                <>Update Resource</>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* View Dialog */}
+      <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
+        <DialogContent className="sm:max-w-[800px]">
+          <DialogHeader>
+            <DialogTitle>View Resource</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-6">
+            <div>
+              <div className="rounded-md overflow-hidden h-48 bg-neutral-100 mb-4">
+                {formData.imageUrl ? (
+                  <img
+                    src={formData.imageUrl}
+                    alt={formData.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <i className="fas fa-image text-neutral-400 text-3xl"></i>
+                  </div>
+                )}
+              </div>
+              
+              <h2 className="text-2xl font-bold mb-2">{formData.title}</h2>
+              
+              <div className="flex flex-wrap gap-2 mb-4">
+                <Badge className={getTypeColor(formData.type)}>
+                  {getTypeLabel(formData.type)}
+                </Badge>
+                {formData.categories.map((category, idx) => (
+                  <Badge key={idx} variant="outline">
+                    {resourceFilters.find(f => f.id === category)?.label || category}
+                  </Badge>
+                ))}
+              </div>
+              
+              <p className="text-sm text-neutral-500 mb-4">
+                Published: {formatDate(formData.publishedAt)}
+              </p>
+              
+              <p className="text-neutral-700 mb-6">{formData.description}</p>
+              
+              <div className="border-t pt-4">
+                <h3 className="text-lg font-semibold mb-2">Content Preview</h3>
+                {formData.content.includes('notion.so') ? (
+                  <div className="p-4 bg-neutral-50 rounded-md border">
+                    <p className="text-sm">
+                      <i className="fab fa-notion mr-2"></i>
+                      Notion document embedded: <a href={formData.content} target="_blank" rel="noopener noreferrer" className="text-primary underline">View in Notion</a>
+                    </p>
+                  </div>
+                ) : (
+                  <div className="p-4 bg-neutral-50 rounded-md border max-h-64 overflow-y-auto">
+                    <p className="whitespace-pre-wrap">{contentPreview(formData.content, 1000)}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsViewDialogOpen(false)}>Close</Button>
+            <Button variant="outline" onClick={() => {
+              setIsViewDialogOpen(false);
+              handleEdit(resources.find(r => r.id === selectedResourceId)!);
+            }}>
+              Edit
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="sm:max-w-[450px]">
+          <DialogHeader>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <p className="text-neutral-700">
+              Are you sure you want to delete this resource? This action cannot be undone.
+            </p>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
+            <Button variant="destructive" onClick={confirmDelete} disabled={deleteMutation.isPending}>
+              {deleteMutation.isPending ? (
+                <>
+                  <div className="animate-spin mr-2 h-4 w-4 border-2 border-b-transparent rounded-full"></div>
+                  Deleting...
+                </>
+              ) : (
+                <>Delete Resource</>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

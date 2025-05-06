@@ -1,5 +1,5 @@
-// Content Types
-export interface Testimonial {
+// Content Types for frontend UI
+export interface TestimonialUI {
   metric: string;
   title: string;
   description: string;
@@ -9,7 +9,7 @@ export interface Testimonial {
   company: string;
 }
 
-export interface Service {
+export interface ServiceUI {
   id: string;
   icon: string;
   title: string;
@@ -17,7 +17,7 @@ export interface Service {
   features: string[];
 }
 
-export interface Industry {
+export interface IndustryUI {
   id: string;
   title: string;
   image: string;
@@ -26,7 +26,7 @@ export interface Industry {
   cta: string;
 }
 
-export interface Resource {
+export interface ResourceUI {
   id: string;
   image: string;
   categories: string[];
@@ -35,6 +35,34 @@ export interface Resource {
   date: string;
   type: "article" | "whitepaper" | "case-study";
   url?: string;
+}
+
+// Types matching backend schema for API responses
+export interface Testimonial {
+  id: number;
+  name: string;
+  position: string;
+  company: string;
+  testimonial: string;
+  metric?: string;
+  metricTitle?: string;
+  imageUrl?: string;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface Resource {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  content: string;
+  imageUrl: string;
+  categories: string[];
+  type: "article" | "whitepaper" | "case-study";
+  publishedAt: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Differentiator {

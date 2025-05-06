@@ -1,0 +1,93 @@
+Please apply all of the following refinements in one comprehensive checkpoint for the NextGenixTech website:
+
+🌑 1. Dark Theme + Visual Enhancements
+Apply a full dark theme site-wide using bold contrast and vibrant tech-inspired accent colors (e.g., violet, magenta, deep purple, electric teal).
+
+Use the provided screenshots only as visual reference — do not copy layout or text. Match headline, button, and layout aesthetics based on design cues, not content.
+
+After switching to dark theme, ensure all other sections (cards, headers, testimonials, CTAs) are visually adapted and accessible in the new color scheme.
+
+🌀 2. UI Interactivity & Animations
+Add smooth hover animation effects for service cards, CTA blocks, and testimonials.
+
+Implement revolving/fading animation for the testimonials section.
+
+Make the main header menu sticky, and ensure no page content overlaps it while scrolling.
+
+⚙️ 3. Admin & Form Fixes
+Make the Featured Image URL field optional in the admin panel.
+
+Fix content publishing error:
+
+Properly parse publishedAt as a valid Date instead of a string.
+
+Resolve API issues (503/400 errors on resource creation).
+
+Fix ARIA warning: Add missing aria-describedby for dialog content.
+
+🧩 4. New Service Section
+Add a service titled Digital Marketing & Social Media Strategy:
+
+USP: “Performance-led marketing powered by data, automation, and AI.”
+
+Description: “We build digital funnels that convert — with AI-powered targeting, omnichannel growth, and creative brand positioning.”
+
+CTA: “📈 Let’s Audit Your Digital Funnel — Free Strategy Session”
+
+Add to homepage, services page, menus, and filterable areas.
+
+🎯 5. CTA Placement by Context
+Homepage Hero: “🎯 Book a Free Tech Audit — Get an MVP Delivered, On Us”
+
+Cloud Services: “🔍 Request a Free Cloud Cost Review”
+
+AI Integration: “🤖 Map AI Into Your Workflow — Free Demo”
+
+Security: “🛡️ Get a Zero-Trust Readiness Snapshot”
+
+Marketing: “📈 Let’s Audit Your Digital Funnel”
+
+Contact Page: “🤔 Not Ready to Book? Ask Us Anything — No Strings Attached”
+
+📅 6. Calendly Integration (Fully Functional)
+Do not just embed the widget. Fully integrate a working Calendly appointment scheduling system into the Contact or Booking page.
+
+Use this Calendly account/email: connect.nextgenixtech@gmail.com
+
+Integration must:
+
+Load real-time availability
+
+Support time zone detection
+
+Allow event confirmation
+
+Trigger email confirmations upon booking
+
+📝 7. Enhanced Contact Form
+Add the following mandatory fields:
+
+Name, Email, Phone Number
+
+Monthly Revenue (optional)
+
+Budget Range (checkbox list like in the screenshot)
+
+Readiness to Start (radio buttons or checkboxes)
+
+Message box for project details
+
+Ensure all fields are validated before submission and logged correctly.
+
+🖼️ 8. Logo Update
+Replace the current logo with a new design that:
+
+Matches the dark theme
+
+Feels premium and AI-driven
+
+Uses sleek modern typography and clean iconography
+
+Avoids generic, clip-art style visuals
+
+Please confirm when this checkpoint is live so we can proceed with validation and launch planning.

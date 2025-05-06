@@ -41,7 +41,7 @@ export const siteConfig: SiteConfig = {
   name: "NextGenixTech",
   tagline: "Smart Tech. Real Outcomes.",
   description: "AI-Native IT Consultancy - From strategy to delivery, we engineer results, not just roadmaps.",
-  contactEmail: "info@nextgenixtech.com",
+  contactEmail: "connect.nextgenixtech@gmail.com",
   phoneNumber: "+1 (415) 555-7890",
   address: {
     street: "123 Tech Avenue, Suite 500",

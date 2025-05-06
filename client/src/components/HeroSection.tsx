@@ -125,22 +125,22 @@ const HeroSection = () => {
             className="mt-10 flex justify-center gap-4 flex-col sm:flex-row"
           >
             <Link href="/contact">
-              <motion.a 
-                className="px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-medium shadow-lg hover:shadow-primary/30 hover:scale-105 transition-all duration-300 flex items-center justify-center"
+              <motion.div 
+                className="px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-medium shadow-lg hover:shadow-primary/30 hover:scale-105 transition-all duration-300 flex items-center justify-center cursor-pointer"
                 whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(157, 78, 221, 0.4)" }}
                 whileTap={{ scale: 0.98 }}
               >
                 <span className="mr-2">🎯</span> Book a Free Tech Audit — Get an MVP Delivered, On Us
-              </motion.a>
+              </motion.div>
             </Link>
             <Link href="/services">
-              <motion.a 
-                className="px-8 py-4 rounded-xl bg-neutral-800 text-white font-medium shadow-lg hover:shadow-neutral-700/20 transition-all duration-300 flex items-center justify-center"
+              <motion.div 
+                className="px-8 py-4 rounded-xl bg-neutral-800 text-white font-medium shadow-lg hover:shadow-neutral-700/20 transition-all duration-300 flex items-center justify-center cursor-pointer"
                 whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.3)" }}
                 whileTap={{ scale: 0.98 }}
               >
                 Explore Our Services
-              </motion.a>
+              </motion.div>
             </Link>
           </motion.div>
         </motion.div>

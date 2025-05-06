@@ -294,13 +294,13 @@ const TestimonialsSection = () => {
           <p className="text-neutral-400 mb-3 text-sm uppercase tracking-wider">Cross-Post Everywhere</p>
           <h3 className="text-3xl md:text-4xl font-bold text-white mb-8">Post EVERYWHERE to maximize reach (for free)</h3>
           <Link href="/contact">
-            <motion.a 
-              className="inline-block px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-medium shadow-lg hover:shadow-primary/30 hover:scale-105 transition-all duration-300 flex items-center justify-center"
+            <motion.div 
+              className="inline-flex px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-medium shadow-lg hover:shadow-primary/30 hover:scale-105 transition-all duration-300 items-center justify-center cursor-pointer"
               whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(157, 78, 221, 0.4)" }}
               whileTap={{ scale: 0.98 }}
             >
               Start Creating
-            </motion.a>
+            </motion.div>
           </Link>
         </motion.div>
       </div>

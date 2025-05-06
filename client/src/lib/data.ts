@@ -18,7 +18,6 @@ export const navItems: NavItem[] = [
       { text: "Cloud-Smart Solutions", href: "/services#cloud" },
       { text: "AI-First Services", href: "/services#ai" },
       { text: "Outcome-Based Engagements", href: "/services#outcome" },
-      { text: "Digital Marketing", href: "/services#marketing" },
       { text: "Security-Embedded Delivery", href: "/services#security" },
     ] 
   },
@@ -146,17 +145,6 @@ export const services: Service[] = [
       "Performance-based contracts",
       "KPI definition and tracking",
       "Continuous optimization"
-    ]
-  },
-  {
-    id: "marketing",
-    icon: "fa-bullhorn",
-    title: "Digital Marketing & Social Media Strategy",
-    description: "Performance-led marketing powered by data, automation, and AI.",
-    features: [
-      "Cross-platform campaigns",
-      "AI-powered ad targeting",
-      "ROI-focused growth strategies"
     ]
   },
   {

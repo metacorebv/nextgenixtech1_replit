@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, useAnimation, useInView } from "framer-motion";
+import { motion, useAnimation, useInView, AnimatePresence } from "framer-motion";
+import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { getQueryFn } from "../lib/queryClient";
 import { testimonials as defaultTestimonials } from "../lib/data";
@@ -22,6 +23,7 @@ const TestimonialsSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const controls = useAnimation();
   const ref = useRef(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true });
   
   // Fetch testimonials from the API
@@ -49,6 +51,20 @@ const TestimonialsSection = () => {
     setCurrentSlide(0);
   }, [testimonials]);
 
+  // Auto-carousel effect
+  useEffect(() => {
+    if (testimonials.length <= 1) return;
+    
+    const interval = setInterval(() => {
+      setCurrentSlide(prev => {
+        const next = prev + 1;
+        return next >= testimonials.length ? 0 : next;
+      });
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, [testimonials.length]);
+
   const getVisibleSlides = () => {
     if (typeof window !== "undefined") {
       return window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
@@ -60,8 +76,8 @@ const TestimonialsSection = () => {
   const maxSlide = Math.max(0, testimonials.length - visibleSlides);
 
   const goToSlide = (slideIndex: number) => {
-    if (slideIndex < 0) slideIndex = 0;
-    if (slideIndex > maxSlide) slideIndex = maxSlide;
+    if (slideIndex < 0) slideIndex = testimonials.length - 1;
+    if (slideIndex >= testimonials.length) slideIndex = 0;
     setCurrentSlide(slideIndex);
   };
 
@@ -88,10 +104,10 @@ const TestimonialsSection = () => {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-b from-neutral-900 via-neutral-900 to-neutral-950 text-white relative overflow-hidden">
+    <section className="py-20 bg-neutral-900 text-white relative overflow-hidden">
       {/* Animated gradient orbs */}
       <motion.div 
-        className="absolute top-20 left-10 w-72 h-72 rounded-full bg-primary/10 blur-3xl -z-10"
+        className="absolute top-20 left-10 w-72 h-72 rounded-full bg-primary/10 blur-[100px] -z-10"
         animate={{ 
           x: [0, 30, 0], 
           y: [0, -20, 0],
@@ -102,7 +118,7 @@ const TestimonialsSection = () => {
       />
       
       <motion.div 
-        className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-secondary/10 blur-3xl -z-10"
+        className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-secondary/10 blur-[100px] -z-10"
         animate={{ 
           x: [0, -30, 0], 
           y: [0, 20, 0],
@@ -118,19 +134,19 @@ const TestimonialsSection = () => {
           variants={containerVariants}
           initial="hidden"
           animate={controls}
-          className="text-center mb-10"
+          className="text-center mb-12"
         >
           <motion.h2 
             variants={itemVariants}
-            className="text-3xl md:text-4xl font-heading font-bold"
+            className="text-3xl md:text-5xl font-heading font-bold"
           >
-            Real Results for <span className="text-gradient bg-gradient-to-r from-secondary to-accent">Real Businesses</span>
+            Built by the <span className="text-gradient bg-gradient-to-r from-primary via-secondary to-accent inline-block">fastest-growing</span> AI influencer
           </motion.h2>
           <motion.p 
             variants={itemVariants}
-            className="mt-4 text-neutral-300 max-w-2xl mx-auto"
+            className="mt-6 text-neutral-300 max-w-2xl mx-auto text-lg"
           >
-            Our clients see measurable outcomes, not just promises. Here's what they have to say about working with us.
+            Our clients see measurable outcomes across platforms, not just promises.
           </motion.p>
         </motion.div>
         
@@ -143,75 +159,88 @@ const TestimonialsSection = () => {
             <p className="text-neutral-300">Could not load testimonials. Please try again later.</p>
           </div>
         ) : (
-          <div className="relative">
+          <div className="relative" ref={carouselRef}>
             <div className="overflow-hidden" id="testimonial-carousel">
-              <motion.div 
-                className="flex"
-                animate={{ 
-                  translateX: `-${currentSlide * (100 / visibleSlides)}%` 
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              >
-                {testimonials.map((testimonial, index) => (
-                  <motion.div 
-                    key={index}
-                    className={`w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4`}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 * index }}
-                  >
+              <AnimatePresence mode="wait">
+                <motion.div 
+                  key={currentSlide}
+                  className="grid grid-cols-1 md:grid-cols-3 gap-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {testimonials.length > 0 && (
                     <motion.div 
-                      className="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-2xl p-6 shadow-lg border border-neutral-700/50 h-full"
+                      className="bg-neutral-800 rounded-xl p-8 shadow-lg border border-neutral-700/50 h-full"
                       whileHover={{ y: -5, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)" }}
                     >
                       <div className="flex items-center mb-4">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white">
-                          <i className="fas fa-quote-left"></i>
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white">
+                          <i className="fas fa-user-friends text-xl"></i>
                         </div>
-                        <div className="ml-3">
-                          <h3 className="text-lg font-semibold text-white">{testimonial.title}</h3>
+                        <div className="ml-4">
+                          <h3 className="text-2xl md:text-4xl font-bold text-white">500,000+</h3>
+                          <p className="text-neutral-300">Followers in 6 Months</p>
                         </div>
                       </div>
                       
-                      <div className="mb-4">
-                        <div className="text-4xl font-bold bg-gradient-to-r from-secondary to-accent text-gradient">{testimonial.metric}</div>
-                      </div>
-                      
-                      <p className="text-neutral-200 mb-6 text-base leading-relaxed italic">"{testimonial.description}"</p>
-                      
-                      <div className="mt-6 flex items-center">
-                        <div className="flex-shrink-0">
-                          <div className="h-12 w-12 rounded-full overflow-hidden shadow-inner border-2 border-neutral-700">
-                            {testimonial.image ? (
-                              <img 
-                                src={testimonial.image} 
-                                alt={testimonial.name}
-                                className="h-full w-full object-cover"
-                              />
-                            ) : (
-                              <div className="h-full w-full bg-neutral-600 flex items-center justify-center">
-                                <i className="fas fa-user text-neutral-200"></i>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        <div className="ml-3">
-                          <p className="text-sm font-medium text-white">{testimonial.name}</p>
-                          <p className="text-xs text-neutral-400">{testimonial.position}, <span className="text-secondary">{testimonial.company}</span></p>
-                        </div>
+                      <div className="mt-6">
+                        <p className="text-neutral-200 text-lg leading-relaxed">Rapidly built a dedicated community of AI enthusiasts and creators looking to leverage no-code tools.</p>
                       </div>
                     </motion.div>
-                  </motion.div>
-                ))}
-              </motion.div>
+                  )}
+                  
+                  {testimonials.length > 0 && (
+                    <motion.div 
+                      className="bg-neutral-800 rounded-xl p-8 shadow-lg border border-neutral-700/50 h-full"
+                      whileHover={{ y: -5, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)" }}
+                    >
+                      <div className="flex items-center mb-4">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white">
+                          <i className="fas fa-eye text-xl"></i>
+                        </div>
+                        <div className="ml-4">
+                          <h3 className="text-2xl md:text-4xl font-bold text-white">50,000,000+</h3>
+                          <p className="text-neutral-300">Views in 6 Months</p>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-6">
+                        <p className="text-neutral-200 text-lg leading-relaxed">Created and distributed viral AI content across platforms, generating massive engagement with no-code techniques.</p>
+                      </div>
+                    </motion.div>
+                  )}
+                  
+                  {testimonials.length > 0 && (
+                    <motion.div 
+                      className="bg-neutral-800 rounded-xl p-8 shadow-lg border border-neutral-700/50 h-full"
+                      whileHover={{ y: -5, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)" }}
+                    >
+                      <div className="flex items-center mb-4">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white">
+                          <i className="fas fa-dollar-sign text-xl"></i>
+                        </div>
+                        <div className="ml-4">
+                          <h3 className="text-2xl md:text-4xl font-bold text-white">$0</h3>
+                          <p className="text-neutral-300">Budget</p>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-6">
+                        <p className="text-neutral-200 text-lg leading-relaxed">Achieved massive reach and growth using our proprietary AI content strategy with zero paid advertising.</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </div>
             
-            {testimonials.length > visibleSlides && (
+            {testimonials.length > 3 && (
               <>
                 <motion.button 
-                  className="absolute -left-3 lg:left-2 top-1/2 -translate-y-1/2 bg-gradient-to-br from-neutral-700 to-neutral-800 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:shadow-primary/20 z-10 focus:outline-none" 
+                  className="absolute -left-3 lg:left-2 top-1/2 -translate-y-1/2 bg-gradient-to-br from-primary to-secondary text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:shadow-primary/20 z-10 focus:outline-none" 
                   onClick={() => goToSlide(currentSlide - 1)}
-                  disabled={currentSlide === 0}
                   whileHover={{ scale: 1.1, x: -5 }}
                   whileTap={{ scale: 0.95 }}
                   initial={{ opacity: 0, x: -20 }}
@@ -221,9 +250,8 @@ const TestimonialsSection = () => {
                   <i className="fas fa-chevron-left"></i>
                 </motion.button>
                 <motion.button 
-                  className="absolute -right-3 lg:right-2 top-1/2 -translate-y-1/2 bg-gradient-to-br from-neutral-700 to-neutral-800 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:shadow-primary/20 z-10 focus:outline-none" 
+                  className="absolute -right-3 lg:right-2 top-1/2 -translate-y-1/2 bg-gradient-to-br from-primary to-secondary text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:shadow-primary/20 z-10 focus:outline-none" 
                   onClick={() => goToSlide(currentSlide + 1)}
-                  disabled={currentSlide === maxSlide}
                   whileHover={{ scale: 1.1, x: 5 }}
                   whileTap={{ scale: 0.95 }}
                   initial={{ opacity: 0, x: 20 }}
@@ -237,21 +265,44 @@ const TestimonialsSection = () => {
           </div>
         )}
         
-        {/* Navigation dots for mobile */}
-        {testimonials.length > 1 && (
-          <div className="flex justify-center mt-8 md:hidden">
-            {Array.from({ length: testimonials.length }).map((_, index) => (
+        {/* Pagination indicators */}
+        {testimonials.length > 3 && (
+          <div className="flex justify-center mt-8">
+            {Array.from({ length: Math.ceil(testimonials.length / 3) }).map((_, index) => (
               <button
                 key={index}
-                onClick={() => goToSlide(index)}
-                className={`mx-1 h-2 w-2 rounded-full ${
-                  index === currentSlide ? 'bg-primary' : 'bg-neutral-600'
+                onClick={() => goToSlide(index * 3)}
+                className={`mx-1 h-3 w-3 rounded-full transition-all duration-300 ${
+                  Math.floor(currentSlide / 3) === index 
+                    ? 'bg-gradient-to-r from-primary to-secondary w-8' 
+                    : 'bg-neutral-600 hover:bg-neutral-500'
                 }`}
-                aria-label={`Go to slide ${index + 1}`}
+                aria-label={`Go to slide group ${index + 1}`}
               />
             ))}
           </div>
         )}
+
+        {/* Cross-post section */}
+        <motion.div
+          className="mt-20 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+        >
+          <p className="text-neutral-400 mb-3 text-sm uppercase tracking-wider">Cross-Post Everywhere</p>
+          <h3 className="text-3xl md:text-4xl font-bold text-white mb-8">Post EVERYWHERE to maximize reach (for free)</h3>
+          <Link href="/contact">
+            <motion.a 
+              className="inline-block px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-medium shadow-lg hover:shadow-primary/30 hover:scale-105 transition-all duration-300 flex items-center justify-center"
+              whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(157, 78, 221, 0.4)" }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Start Creating
+            </motion.a>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

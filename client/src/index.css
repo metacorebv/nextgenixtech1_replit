@@ -5,6 +5,68 @@
 @tailwind utilities;
 
 :root {
+  /* Using dark theme by default as per request */
+  --background: 230 30% 9%;
+  --foreground: 210 10% 95%;
+  
+  --muted: 230 20% 16%;
+  --muted-foreground: 210 10% 65%;
+  
+  --popover: 230 25% 12%;
+  --popover-foreground: 210 10% 95%;
+  
+  --card: 230 25% 12%;
+  --card-foreground: 210 10% 95%;
+  
+  --border: 230 15% 20%;
+  --input: 230 15% 20%;
+  
+  /* Vibrant purple from screenshot */
+  --primary: 267 95% 68%;
+  --primary-foreground: 0 0% 100%;
+  
+  /* Vibrant gradient colors from screenshots */  
+  --secondary: 331 95% 71%;
+  --secondary-foreground: 0 0% 100%;
+  
+  --accent: 24 95% 66%;
+  --accent-foreground: 0 0% 100%;
+  
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  
+  --ring: 267 95% 68%;
+  
+  /* Dark-themed neutrals */
+  --neutral-50: 230 20% 98%;
+  --neutral-100: 230 15% 95%;
+  --neutral-200: 230 10% 90%;
+  --neutral-300: 230 8% 80%;
+  --neutral-400: 230 6% 70%;
+  --neutral-500: 230 5% 55%;
+  --neutral-600: 230 5% 45%;
+  --neutral-700: 230 6% 30%;
+  --neutral-800: 230 10% 20%;
+  --neutral-900: 230 15% 10%;
+  --neutral-950: 230 20% 5%;
+  
+  --warm-gray-50: 20 20% 97%;
+  --warm-gray-100: 20 15% 94%;
+  --warm-gray-200: 20 10% 89%;
+  --warm-gray-300: 20 8% 80%;
+  --warm-gray-400: 20 6% 64%;
+  --warm-gray-500: 20 5% 54%;
+  --warm-gray-600: 20 6% 42%;
+  --warm-gray-700: 20 8% 30%;
+  --warm-gray-800: 20 10% 16%;
+  --warm-gray-900: 20 15% 10%;
+  --warm-gray-950: 20 20% 6%;
+  
+  --radius: 0.5rem;
+}
+
+/* Light theme - keeping this for reference but using dark theme by default */
+.light {
   --background: 260 20% 99%;
   --foreground: 260 10% 10%;
   
@@ -33,63 +95,6 @@
   --destructive-foreground: 0 0% 100%;
   
   --ring: 267 59% 40%;
-  
-  --neutral-50: 260 20% 98%;
-  --neutral-100: 260 15% 95%;
-  --neutral-200: 260 10% 90%;
-  --neutral-300: 260 8% 80%;
-  --neutral-400: 260 6% 70%;
-  --neutral-500: 260 5% 55%;
-  --neutral-600: 260 5% 45%;
-  --neutral-700: 260 6% 30%;
-  --neutral-800: 260 10% 20%;
-  --neutral-900: 260 15% 10%;
-  --neutral-950: 260 20% 5%;
-  
-  --warm-gray-50: 20 20% 97%;
-  --warm-gray-100: 20 15% 94%;
-  --warm-gray-200: 20 10% 89%;
-  --warm-gray-300: 20 8% 80%;
-  --warm-gray-400: 20 6% 64%;
-  --warm-gray-500: 20 5% 54%;
-  --warm-gray-600: 20 6% 42%;
-  --warm-gray-700: 20 8% 30%;
-  --warm-gray-800: 20 10% 16%;
-  --warm-gray-900: 20 15% 10%;
-  --warm-gray-950: 20 20% 6%;
-  
-  --radius: 0.5rem;
-}
-
-.dark {
-  --background: 260 30% 10%;
-  --foreground: 260 10% 95%;
-  
-  --muted: 260 20% 16%;
-  --muted-foreground: 260 10% 65%;
-  
-  --popover: 260 25% 12%;
-  --popover-foreground: 260 10% 95%;
-  
-  --card: 260 25% 12%;
-  --card-foreground: 260 10% 95%;
-  
-  --border: 260 15% 20%;
-  --input: 260 15% 20%;
-  
-  --primary: 267 59% 50%;
-  --primary-foreground: 0 0% 100%;
-  
-  --secondary: 12 76% 61%;
-  --secondary-foreground: 0 0% 100%;
-  
-  --accent: 174 84% 36%;
-  --accent-foreground: 0 0% 100%;
-  
-  --destructive: 0 70% 45%;
-  --destructive-foreground: 0 0% 100%;
-  
-  --ring: 267 59% 50%;
 }
 
 @layer base {

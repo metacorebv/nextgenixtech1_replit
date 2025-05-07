@@ -75,7 +75,7 @@ const WhyChooseUsSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-primary/5">
+    <section className="py-20 bg-[color:var(--background)] dark:bg-[color:var(--card)]/10">
       <div className="container-custom">
         <motion.div 
           ref={ref}
@@ -86,13 +86,13 @@ const WhyChooseUsSection = () => {
         >
           <motion.h2 
             variants={itemVariants}
-            className="text-3xl md:text-4xl font-heading font-bold text-neutral-900"
+            className="text-3xl md:text-4xl font-heading font-bold text-[color:var(--foreground)]"
           >
-            Why Choose NextGenixTech
+            Why Choose <span className="bg-gradient-to-r from-primary to-secondary text-gradient">NextGenixTech</span>
           </motion.h2>
           <motion.p 
             variants={itemVariants}
-            className="mt-4 text-neutral-700 max-w-2xl mx-auto"
+            className="mt-4 text-[color:var(--muted-foreground)] max-w-2xl mx-auto"
           >
             We're redefining IT consultancy with a focus on real business outcomes, not billable hours.
           </motion.p>
@@ -106,13 +106,13 @@ const WhyChooseUsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 * (index % 3) }}
-              className="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300"
+              className="bg-[color:var(--card)] rounded-2xl shadow-md p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-border/50 group"
             >
-              <div className="w-12 h-12 bg-primary/10 flex items-center justify-center rounded-2xl mb-4">
-                <i className={`fas ${item.icon} text-primary text-xl`}></i>
+              <div className="w-12 h-12 bg-primary/10 flex items-center justify-center rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300 group-hover:bg-primary/20">
+                <i className={`fas ${item.icon} text-primary text-xl group-hover:text-primary/90 transition-colors`}></i>
               </div>
-              <h3 className="text-lg font-heading font-semibold mb-2">{item.title}</h3>
-              <p className="text-neutral-700">{item.description}</p>
+              <h3 className="text-lg font-heading font-semibold mb-2 text-[color:var(--foreground)] group-hover:text-primary transition-colors">{item.title}</h3>
+              <p className="text-[color:var(--muted-foreground)]">{item.description}</p>
             </motion.div>
           ))}
         </div>
@@ -124,10 +124,11 @@ const WhyChooseUsSection = () => {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mt-12 text-center"
         >
-          <Link href="/contact">
-            <a className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-2xl text-white bg-primary hover:bg-primary/90 transition-colors">
-              Book Your Free Tech Audit
-            </a>
+          <Link href="/contact" className="inline-flex items-center px-6 py-3 border border-primary/20 text-base font-medium rounded-2xl text-[color:var(--background)] bg-primary hover:bg-primary/90 shadow-md hover:shadow-primary/20 transition-all">
+            Book Your Free Tech Audit
+            <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
           </Link>
         </motion.div>
       </div>

@@ -63,13 +63,9 @@ const HeroSection = () => {
     <section className="pt-14 pb-24 md:pt-20 md:pb-32 relative overflow-hidden">
       {/* Modern gradient background with animated motion */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-background -z-10"
+        className="absolute inset-0 bg-gradient-to-br from-primary/5 via-[color:var(--background)] to-[color:var(--background)] -z-10"
         animate={{ 
-          background: [
-            "linear-gradient(to bottom right, rgba(102, 51, 153, 0.05), rgba(255, 255, 255, 1), rgba(255, 255, 255, 1))",
-            "linear-gradient(to bottom right, rgba(102, 51, 153, 0.08), rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.9))",
-            "linear-gradient(to bottom right, rgba(102, 51, 153, 0.05), rgba(255, 255, 255, 1), rgba(255, 255, 255, 1))"
-          ] 
+          opacity: [0.8, 1, 0.8]
         }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -108,14 +104,14 @@ const HeroSection = () => {
         >
           <motion.h1 
             variants={itemVariants}
-            className="text-4xl sm:text-5xl md:text-7xl font-heading font-bold tracking-tight text-neutral-900 leading-tight"
+            className="text-4xl sm:text-5xl md:text-7xl font-heading font-bold tracking-tight text-[color:var(--foreground)] leading-tight"
           >
             AI-Native. Secure by Design. <span className="text-gradient bg-gradient-to-r from-primary via-secondary to-accent inline-block">Built for Business Impact.</span>
           </motion.h1>
           
           <motion.p 
             variants={itemVariants}
-            className="mt-6 text-lg md:text-2xl text-neutral-700 leading-relaxed"
+            className="mt-6 text-lg md:text-2xl text-[color:var(--muted-foreground)] leading-relaxed"
           >
             From strategy to delivery, we engineer results — not just roadmaps.
           </motion.p>
@@ -125,22 +121,22 @@ const HeroSection = () => {
             className="mt-10 flex justify-center gap-4 flex-col sm:flex-row"
           >
             <Link href="/contact">
-              <motion.a 
-                className="px-8 py-4 rounded-2xl bg-primary text-white font-medium shadow-lg hover:shadow-primary/30 hover:scale-105 transition-all duration-300 flex items-center justify-center"
-                whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(102, 51, 153, 0.4)" }}
+              <motion.div 
+                className="px-8 py-4 rounded-2xl bg-primary text-[color:var(--background)] font-medium shadow-lg hover:shadow-primary/30 hover:scale-105 transition-all duration-300 flex items-center justify-center"
+                whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(var(--primary), 0.4)" }}
                 whileTap={{ scale: 0.98 }}
               >
                 <span className="mr-2">🎯</span> Book a Free Tech Audit
-              </motion.a>
+              </motion.div>
             </Link>
             <Link href="/services">
-              <motion.a 
-                className="px-8 py-4 rounded-2xl bg-white text-neutral-900 font-medium shadow-lg hover:shadow-secondary/20 transition-all duration-300 flex items-center justify-center"
+              <motion.div 
+                className="px-8 py-4 rounded-2xl bg-[color:var(--card)] text-[color:var(--foreground)] font-medium shadow-lg hover:shadow-secondary/20 border border-border/50 transition-all duration-300 flex items-center justify-center"
                 whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
                 whileTap={{ scale: 0.98 }}
               >
                 Explore Our Services
-              </motion.a>
+              </motion.div>
             </Link>
           </motion.div>
         </motion.div>

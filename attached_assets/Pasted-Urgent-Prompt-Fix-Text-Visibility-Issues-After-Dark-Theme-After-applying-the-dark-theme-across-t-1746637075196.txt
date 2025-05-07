@@ -1,0 +1,44 @@
+Urgent Prompt: Fix Text Visibility Issues After Dark Theme
+⚠️ After applying the dark theme across the NextGenixTech website, multiple text and UI elements have become unreadable due to low color contrast. This is a major UX and accessibility issue and needs to be addressed immediately.
+
+I have provided several screenshots showing exact areas where the problems are occurring — please refer to them as visual guidance only. They clearly demonstrate how certain text (headings, descriptions, menu links, and hover states) disappear or become too faint to read against the dark backgrounds.
+
+🔧 What Needs to Be Fixed (Based on Screenshots)
+1. Dropdown Menus (Services & Industries)
+Text inside dropdowns is almost invisible against the dark background.
+
+✅ Fix: Use bright or high-contrast text color for dropdown items (e.g., #F2F2F2, #FFFFFF, or a theme-accent color).
+
+2. Card Headings and Icons
+Text and icon color inside service cards (like “AI-First”, “Security-Embedded Delivery”) is too dim on white or light backgrounds.
+
+✅ Fix: Increase text and icon contrast; use darker text on light cards or bold text on dark overlays.
+
+3. Industry Solutions Section
+Secondary text under titles like “Fintech” or “Healthcare” is almost invisible.
+
+✅ Fix: Lighten or recolor paragraph text and titles to maintain proper contrast against dark overlays.
+
+4. Why Choose Us Section
+Several text blocks (headings, descriptions) are either too light or completely washed out.
+
+✅ Fix: Re-evaluate this entire section’s text color; ensure hover states and contrast are readable in both light and dark mode variants.
+
+5. Global Contrast and Hover States
+Multiple hover/focus elements (e.g., icons, CTAs, card headers) do not visibly change or appear to “disappear.”
+
+✅ Fix: Ensure every interactive element has a distinct hover/focus color, even in dark mode.
+
+📌 Additional Notes
+Do not copy content from the screenshots — use them only as reference for identifying visibility issues.
+
+Please perform a full contrast audit of the site in dark mode and apply global fixes to ensure readability and accessibility.
+
+All text should meet WCAG AA accessibility standards for contrast ratios (4.5:1 minimum for normal text).
+
+✅ Expected Outcome
+All text — headers, dropdowns, card content, section titles, and hover states — must be clearly visible and readable.
+
+Text colors must dynamically adapt based on background.
+
+Screenshots should no longer show “invisible” or faint content when re-tested.

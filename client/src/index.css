@@ -5,30 +5,30 @@
 @tailwind utilities;
 
 :root {
-  /* Dark theme as the default */
-  --background: 230 25% 8%;
-  --foreground: 210 10% 98%;
+  /* Dark theme with enhanced contrast */
+  --background: 230 30% 6%;
+  --foreground: 0 0% 100%;
   
-  --muted: 230 20% 14%;
-  --muted-foreground: 210 10% 70%;
+  --muted: 230 25% 12%;
+  --muted-foreground: 210 15% 85%;
   
-  --popover: 230 25% 10%;
-  --popover-foreground: 210 10% 98%;
+  --popover: 230 30% 8%;
+  --popover-foreground: 0 0% 100%;
   
-  --card: 230 25% 12%;
-  --card-foreground: 210 10% 98%;
+  --card: 230 30% 10%;
+  --card-foreground: 0 0% 100%;
   
-  --border: 230 15% 18%;
-  --input: 230 15% 18%;
+  --border: 230 20% 25%;
+  --input: 230 20% 25%;
   
-  /* Vibrant tech-inspired accent colors */
-  --primary: 280 80% 60%; /* Vibrant violet */
+  /* Enhanced vibrant tech-inspired accent colors */
+  --primary: 280 85% 65%; /* Brighter violet */
   --primary-foreground: 0 0% 100%;
   
-  --secondary: 330 90% 65%; /* Magenta */
+  --secondary: 330 90% 70%; /* Brighter magenta */
   --secondary-foreground: 0 0% 100%;
   
-  --accent: 175 100% 45%; /* Electric teal */
+  --accent: 175 100% 50%; /* Brighter electric teal */
   --accent-foreground: 0 0% 100%;
   
   --destructive: 0 95% 65%;
@@ -118,7 +118,15 @@
   }
   
   .card-hover {
-    @apply transition-all duration-300 hover:shadow-lg;
+    @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:border-primary/30;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent;
+  }
+
+  .card {
+    @apply bg-card border-border shadow-lg shadow-background/80;
   }
 
   .animate-on-scroll {

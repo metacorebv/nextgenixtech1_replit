@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -9,34 +8,34 @@
   /* Modern dark theme with rich professional colors */
   --background: 228 30% 10%;
   --foreground: 210 20% 98%;
-  
+
   --muted: 228 25% 15%;
   --muted-foreground: 210 20% 80%;
-  
+
   --popover: 228 30% 12%;
   --popover-foreground: 210 20% 98%;
-  
+
   --card: 228 30% 13%;
   --card-foreground: 210 20% 98%;
-  
+
   --border: 228 25% 20%;
   --input: 228 25% 20%;
-  
+
   /* Enhanced professional accent colors */
   --primary: 260 80% 60%;
   --primary-foreground: 210 20% 98%;
-  
+
   --secondary: 280 75% 65%;
   --secondary-foreground: 210 20% 98%;
-  
+
   --accent: 200 95% 45%;
   --accent-foreground: 210 20% 98%;
-  
+
   --destructive: 0 90% 60%;
   --destructive-foreground: 210 20% 98%;
-  
+
   --ring: 260 80% 60%;
-  
+
   --neutral-50: 228 25% 98%;
   --neutral-100: 228 20% 95%;
   --neutral-200: 228 15% 90%;
@@ -48,38 +47,38 @@
   --neutral-800: 228 15% 25%;
   --neutral-900: 228 20% 15%;
   --neutral-950: 228 25% 10%;
-  
+
   --radius: 0.75rem;
 }
 
 .light {
   --background: 0 0% 100%;
   --foreground: 228 15% 15%;
-  
+
   --muted: 228 10% 96%;
   --muted-foreground: 228 15% 45%;
-  
+
   --popover: 0 0% 100%;
   --popover-foreground: 228 15% 15%;
-  
+
   --card: 0 0% 100%;
   --card-foreground: 228 15% 15%;
-  
+
   --border: 228 15% 90%;
   --input: 228 15% 90%;
-  
+
   --primary: 260 70% 55%;
   --primary-foreground: 0 0% 100%;
-  
+
   --secondary: 280 65% 60%;
   --secondary-foreground: 0 0% 100%;
-  
+
   --accent: 200 85% 45%;
   --accent-foreground: 0 0% 100%;
-  
+
   --destructive: 0 85% 60%;
   --destructive-foreground: 0 0% 100%;
-  
+
   --ring: 260 70% 55%;
 }
 
@@ -87,11 +86,11 @@
   * {
     @apply border-border;
   }
-  
+
   body {
     @apply bg-background text-foreground font-body antialiased;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-bold tracking-tight;
   }
@@ -101,9 +100,14 @@
   .container-custom {
     @apply container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
   }
-  
+
   .card-hover {
-    @apply transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 hover:border-primary/40 hover:-translate-y-1;
+    @apply transition-all duration-300 
+           hover:shadow-xl hover:shadow-primary/30 
+           hover:border-primary/50 hover:-translate-y-1 
+           hover:bg-primary/5
+           focus:outline-none focus:ring-2 focus:ring-primary/50
+           active:scale-[0.99];
   }
 
   .text-gradient {
@@ -125,7 +129,7 @@
   .animate-on-scroll {
     @apply opacity-0 translate-y-5;
   }
-  
+
   .animate-on-scroll.animated {
     @apply opacity-100 translate-y-0 transition-all duration-700 ease-out;
   }

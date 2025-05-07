@@ -121,11 +121,11 @@ const IndustriesSection = () => {
                       style={{ backgroundImage: `url(${industry.image})` }}
                     ></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-20"></div>
-                    <h3 className="absolute bottom-4 left-6 text-2xl font-heading font-semibold text-white z-30">{industry.title}</h3>
+                    <h3 className="absolute bottom-4 left-6 text-2xl font-heading font-semibold text-white drop-shadow-lg z-30">{industry.title}</h3>
                   </div>
                   <div className="p-6 flex-grow">
-                    <h4 className="text-xl font-heading font-semibold mb-4">{industry.headline}</h4>
-                    <p className="text-neutral-700 mb-6">{industry.description}</p>
+                    <h4 className="text-xl font-heading font-semibold text-foreground mb-4">{industry.headline}</h4>
+                    <p className="text-muted-foreground mb-6">{industry.description}</p>
                     <div className="flex items-center text-primary group-hover:text-primary/80 transition-colors">
                       <span className="font-medium">{industry.cta}</span>
                       <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

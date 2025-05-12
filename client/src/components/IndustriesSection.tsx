@@ -91,13 +91,13 @@ const IndustriesSection = () => {
         >
           <motion.h2 
             variants={itemVariants}
-            className="text-3xl md:text-4xl font-heading font-bold text-neutral-900"
+            className="text-3xl md:text-4xl font-heading font-bold text-foreground"
           >
             Industry Solutions
           </motion.h2>
           <motion.p 
             variants={itemVariants}
-            className="mt-4 text-neutral-700 max-w-2xl mx-auto"
+            className="mt-4 text-muted-foreground max-w-2xl mx-auto"
           >
             Specialized expertise for your industry's unique challenges and opportunities.
           </motion.p>
@@ -112,7 +112,7 @@ const IndustriesSection = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.1 * (index % 2) }}
-                  className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col"
+                  className="bg-card rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col"
                 >
                   <div className="h-48 relative">
                     <div className="absolute inset-0 bg-neutral-900/30 z-10"></div>

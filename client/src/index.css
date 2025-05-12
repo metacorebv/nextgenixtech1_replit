@@ -6,16 +6,16 @@
 
 :root {
   /* High contrast dark theme with accessible colors */
-  --background: 228 30% 8%;
+  --background: 228 30% 10%;
   --foreground: 210 40% 98%;
 
-  --muted: 228 25% 12%;
-  --muted-foreground: 210 40% 90%;
+  --muted: 228 25% 15%;
+  --muted-foreground: 210 40% 95%;
 
-  --popover: 228 30% 10%;
+  --popover: 228 30% 13%;
   --popover-foreground: 210 40% 98%;
 
-  --card: 228 30% 12%;
+  --card: 228 30% 15%;
   --card-foreground: 210 40% 98%;
 
   --border: 228 25% 25%;

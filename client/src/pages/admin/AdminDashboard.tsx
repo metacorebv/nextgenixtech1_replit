@@ -56,7 +56,7 @@ const AdminDashboard = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
             whileHover={{ y: -5, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
-            className="bg-white border border-neutral-200 rounded-xl p-6 transition-all duration-300 shadow-sm"
+            className="bg-card border border-border rounded-xl p-6 transition-all duration-300 shadow-sm"
           >
             <div className="flex items-start">
               <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${module.color} mr-4`}>

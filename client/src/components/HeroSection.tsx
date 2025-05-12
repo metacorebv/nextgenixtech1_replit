@@ -150,19 +150,18 @@ const HeroSection = () => {
               transition={{ duration: 0.5, delay: 0.1 * (index + 4) }}
               whileHover={{ 
                 y: -10, 
-                boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-                background: "linear-gradient(to bottom right, white, rgba(255, 255, 255, 0.8))"
+                boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
               }}
-              className="bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-neutral-100 hover:border-primary/20 transition-all duration-300"
+              className="bg-[color:var(--card)] backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-[color:var(--border)] hover:border-primary/20 transition-all duration-300 group"
             >
               <motion.div 
-                className="w-14 h-14 bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center rounded-2xl mb-4"
+                className="w-14 h-14 bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center rounded-2xl mb-4 group-hover:scale-110 transition-all duration-300"
                 whileHover={{ scale: 1.1, rotate: 5 }}
               >
                 <i className={`fas ${item.icon} text-primary text-xl`}></i>
               </motion.div>
-              <h3 className="text-lg font-heading font-semibold mb-2">{item.title}</h3>
-              <p className="text-neutral-700">{item.description}</p>
+              <h3 className="text-lg font-heading font-semibold mb-2 text-[color:var(--foreground)] group-hover:text-primary transition-colors">{item.title}</h3>
+              <p className="text-[color:var(--muted-foreground)]">{item.description}</p>
             </motion.div>
           ))}
         </div>
@@ -176,7 +175,7 @@ const HeroSection = () => {
           }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <div className="w-7 h-12 border-2 border-neutral-400 rounded-full flex justify-center pt-2">
+          <div className="w-7 h-12 border-2 border-[color:var(--border)] rounded-full flex justify-center pt-2">
             <motion.div 
               className="w-1.5 h-1.5 bg-primary rounded-full"
               animate={{ 
@@ -185,7 +184,7 @@ const HeroSection = () => {
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             />
           </div>
-          <p className="text-xs text-neutral-500 mt-2 text-center">Scroll to explore</p>
+          <p className="text-xs text-[color:var(--muted-foreground)] mt-2 text-center">Scroll to explore</p>
         </motion.div>
       </div>
     </section>

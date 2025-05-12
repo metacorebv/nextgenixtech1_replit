@@ -17,7 +17,7 @@ const ResourcesPage = () => {
 
   const resources: Resource[] = [
     {
-      image: "https://images.unsplash.com/photo-1576086213369-97a306d36557?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+      image: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
       categories: ["ai", "healthcare"],
       title: "AI Readiness in Healthcare: A 2025 Roadmap",
       description: "How healthcare providers can prepare for the next generation of AI-powered medical solutions.",
@@ -25,7 +25,7 @@ const ResourcesPage = () => {
       type: "whitepaper"
     },
     {
-      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+      image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
       categories: ["cloud", "security"],
       title: "Cloud Cost Optimization Playbook",
       description: "Practical strategies to reduce cloud spending without compromising performance or security.",
@@ -33,7 +33,7 @@ const ResourcesPage = () => {
       type: "article"
     },
     {
-      image: "https://images.unsplash.com/photo-1558346547-8961a464dfbf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+      image: "https://images.unsplash.com/photo-1639322537504-6427a16b0a28?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
       categories: ["ai", "security"],
       title: "Securing AI Systems: The 2025 Threat Landscape",
       description: "Emerging threats and defense strategies for AI-powered systems in the enterprise.",
@@ -101,27 +101,25 @@ const ResourcesPage = () => {
         <meta name="description" content="Explore our latest insights, whitepapers, and case studies on AI, cloud optimization, and digital transformation." />
       </Helmet>
       
-      <div className="pt-14 pb-20 md:pt-20 md:pb-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-warm-gray-100 via-warm-gray-50 to-warm-gray-50 -z-10"></div>
-        
+      <div className="pt-14 pb-20 md:pt-20 md:pb-24 relative overflow-hidden bg-[color:var(--background)] dark:bg-[color:var(--card)]/10">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto text-center">
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold tracking-tight text-neutral-900 leading-tight"
+              className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold tracking-tight text-[color:var(--foreground)] leading-tight"
             >
-              Resources & <span className="text-primary">Insights</span>
+              Resources & <span className="bg-gradient-to-r from-primary to-secondary text-gradient">Insights</span>
             </motion.h1>
             
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="mt-6 text-lg md:text-xl text-neutral-700 leading-relaxed"
+              className="mt-6 text-lg md:text-xl text-[color:var(--muted-foreground)] leading-relaxed"
             >
-              Expert perspectives on AI, cloud optimization, and digital transformation.
+              Expert perspectives on AI, cloud optimization, and digital transformations.
             </motion.p>
           </div>
           
@@ -132,8 +130,8 @@ const ResourcesPage = () => {
                   key={filter.id}
                   className={`px-4 py-2 rounded-full font-medium transition-colors ${
                     activeTypeFilter === filter.id 
-                      ? 'bg-secondary text-white' 
-                      : 'bg-white text-neutral-900 hover:bg-warm-gray-100'
+                      ? 'bg-primary text-white shadow-md' 
+                      : 'bg-[color:var(--card)] border border-primary/20 text-[color:var(--foreground)] hover:bg-[color:var(--accent)] hover:text-[color:var(--accent-foreground)]'
                   }`}
                   onClick={() => setActiveTypeFilter(filter.id)}
                 >
@@ -148,8 +146,8 @@ const ResourcesPage = () => {
                   key={filter.id}
                   className={`px-4 py-2 rounded-full font-medium transition-colors ${
                     activeFilter === filter.id 
-                      ? 'bg-primary text-white' 
-                      : 'bg-white text-neutral-900 hover:bg-warm-gray-100'
+                      ? 'bg-primary text-white shadow-md' 
+                      : 'bg-[color:var(--card)] border border-primary/20 text-[color:var(--foreground)] hover:bg-[color:var(--accent)] hover:text-[color:var(--accent-foreground)]'
                   }`}
                   onClick={() => setActiveFilter(filter.id)}
                 >
@@ -161,7 +159,7 @@ const ResourcesPage = () => {
         </div>
       </div>
       
-      <section className="py-12 bg-warm-gray-50">
+      <section className="py-12 bg-[color:var(--background)] dark:bg-[color:var(--card)]/10">
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredResources.map((resource, index) => (
@@ -170,7 +168,7 @@ const ResourcesPage = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 * (index % 3) }}
-                className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col"
+                className="bg-[color:var(--card)] rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col border border-border/50"
               >
                 <div 
                   className="h-48 bg-cover bg-center"
@@ -185,16 +183,16 @@ const ResourcesPage = () => {
                         </span>
                       ))}
                     </div>
-                    <span className="text-sm text-neutral-500">{resource.date}</span>
+                    <span className="text-sm text-[color:var(--muted-foreground)]">{resource.date}</span>
                   </div>
-                  <h3 className="text-xl font-heading font-semibold mb-3">{resource.title}</h3>
-                  <p className="text-neutral-700 mb-4 flex-grow">{resource.description}</p>
+                  <h3 className="text-xl font-heading font-semibold mb-3 text-[color:var(--foreground)]">{resource.title}</h3>
+                  <p className="text-[color:var(--muted-foreground)] mb-4 flex-grow">{resource.description}</p>
                   
                   <div className="flex items-center justify-between mt-4">
                     <span className={`text-xs font-medium px-2 py-1 rounded-full ${
-                      resource.type === 'article' ? 'bg-warm-gray-100 text-neutral-700' :
+                      resource.type === 'article' ? 'bg-primary/10 text-primary' :
                       resource.type === 'whitepaper' ? 'bg-secondary/10 text-secondary' :
-                      'bg-accent/10 text-accent-dark'
+                      'bg-accent/10 text-accent'
                     }`}>
                       {resource.type === 'article' ? 'Article' : 
                        resource.type === 'whitepaper' ? 'Whitepaper' : 
@@ -215,8 +213,8 @@ const ResourcesPage = () => {
           
           {filteredResources.length === 0 && (
             <div className="text-center py-16">
-              <h3 className="text-xl font-semibold text-neutral-900 mb-2">No resources found</h3>
-              <p className="text-neutral-700">Try adjusting your filters to find what you're looking for.</p>
+              <h3 className="text-xl font-semibold text-[color:var(--foreground)] mb-2">No resources found</h3>
+              <p className="text-[color:var(--muted-foreground)]">Try adjusting your filters to find what you're looking for.</p>
             </div>
           )}
         </div>

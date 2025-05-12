@@ -2,8 +2,12 @@ import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import ContactSection from "@/components/ContactSection";
+import { useEffect } from "react";
 
 const FintechPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const solutions = [
     {
       icon: "fa-shield-alt",
@@ -40,8 +44,8 @@ const FintechPage = () => {
       </Helmet>
       
       {/* Hero Section */}
-      <section className="pt-14 pb-24 md:pt-20 md:pb-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-warm-gray-100 via-warm-gray-50 to-warm-gray-50 -z-10"></div>
+      <section className="pt-14 pb-24 md:pt-20 md:pb-32 relative overflow-hidden bg-[color:var(--background)] dark:bg-[color:var(--card)]/10">
+        <div className="absolute inset-0 bg-gradient-to-br from-[color:var(--background)] via-[color:var(--card)] to-[color:var(--card)] -z-10"></div>
         <div className="absolute right-0 top-0 w-1/2 h-full opacity-10 -z-10 bg-[url('https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80')] bg-cover"></div>
         
         <div className="container-custom">
@@ -59,16 +63,16 @@ const FintechPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold tracking-tight text-neutral-900 leading-tight mb-6"
+              className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold tracking-tight text-[color:var(--foreground)] leading-tight mb-6"
             >
-              AI-Driven Fintech Solutions for <span className="text-primary">Compliance and Speed</span>
+              AI-Driven Fintech Solutions for <span className="bg-gradient-to-r from-primary to-secondary text-gradient">Compliance and Speed</span>
             </motion.h1>
             
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg md:text-xl text-neutral-700 leading-relaxed mb-8 max-w-3xl"
+              className="text-lg md:text-xl text-[color:var(--muted-foreground)] leading-relaxed mb-8 max-w-3xl"
             >
               In today's fast-paced financial landscape, institutions need solutions that balance speed, security, and regulatory compliance. Our AI-first approach helps fintech companies overcome these challenges while driving innovation.
             </motion.p>
@@ -147,11 +151,11 @@ const FintechPage = () => {
       </section>
       
       {/* Solutions Section */}
-      <section id="solutions" className="py-20 bg-warm-gray-50">
+      <section id="solutions" className="py-20 bg-[color:var(--background)] dark:bg-[color:var(--card)]/10">
         <div className="container-custom">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-neutral-900 mb-4">Our Fintech Solutions</h2>
-            <p className="text-neutral-700 max-w-3xl mx-auto">Cutting-edge technology solutions designed specifically for the challenges facing financial institutions.</p>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-[color:var(--foreground)] mb-4">Our Fintech Solutions</h2>
+            <p className="text-[color:var(--muted-foreground)] max-w-3xl mx-auto">Cutting-edge technology solutions designed specifically for the challenges facing financial institutions.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -162,13 +166,13 @@ const FintechPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 * (index % 2) }}
-                className="bg-white rounded-2xl shadow-md p-8 hover:shadow-lg transition-shadow duration-300"
+                className="bg-[color:var(--card)] rounded-2xl shadow-md p-8 hover:shadow-lg transition-shadow duration-300 border border-[color:var(--border)]"
               >
                 <div className="w-14 h-14 bg-primary/10 flex items-center justify-center rounded-2xl mb-6">
                   <i className={`fas ${solution.icon} text-primary text-2xl`}></i>
                 </div>
-                <h3 className="text-xl font-heading font-semibold mb-3">{solution.title}</h3>
-                <p className="text-neutral-700">{solution.description}</p>
+                <h3 className="text-xl font-heading font-semibold mb-3 text-[color:var(--foreground)]">{solution.title}</h3>
+                <p className="text-[color:var(--muted-foreground)]">{solution.description}</p>
               </motion.div>
             ))}
           </div>

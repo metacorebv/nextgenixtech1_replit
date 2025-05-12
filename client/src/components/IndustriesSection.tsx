@@ -72,7 +72,7 @@ const IndustriesSection = () => {
     {
       id: "logistics",
       title: "Logistics",
-      image: "https://images.unsplash.com/photo-1519074069390-98277ca18db6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+      image: "https://images.unsplash.com/photo-1529070538774-1843cb3265df?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
       headline: "Predictive AI for Supply Chain & Fleet Optimization",
       description: "Minimize downtime and route inefficiency with AI-powered logistics solutions.",
       cta: "Explore Logistics Solutions"
@@ -105,36 +105,38 @@ const IndustriesSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {industries.map((industry, index) => (
-            <Link key={index} href={`/industries/${industry.id}`}>
-              <a className="group">
-                <motion.div 
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 * (index % 2) }}
-                  className="bg-card rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col"
-                >
-                  <div className="h-48 relative">
-                    <div className="absolute inset-0 bg-neutral-900/30 z-10"></div>
-                    <div 
-                      className="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
-                      style={{ backgroundImage: `url(${industry.image})` }}
-                    ></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-20"></div>
-                    <h3 className="absolute bottom-4 left-6 text-2xl font-heading font-semibold text-white drop-shadow-lg z-30">{industry.title}</h3>
+            <Link
+              key={index}
+              href={`/industries/${industry.id}#top`}
+              className="group"
+            >
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 * (index % 2) }}
+                className="bg-card rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col"
+              >
+                <div className="h-48 relative">
+                  <div className="absolute inset-0 bg-neutral-900/30 z-10"></div>
+                  <div 
+                    className="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
+                    style={{ backgroundImage: `url(${industry.image})` }}
+                  ></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-20"></div>
+                  <h3 className="absolute bottom-4 left-6 text-2xl font-heading font-semibold text-white drop-shadow-lg z-30">{industry.title}</h3>
+                </div>
+                <div className="p-6 flex-grow">
+                  <h4 className="text-xl font-heading font-semibold text-foreground mb-4">{industry.headline}</h4>
+                  <p className="text-muted-foreground mb-6">{industry.description}</p>
+                  <div className="flex items-center text-primary group-hover:text-primary/80 transition-colors">
+                    <span className="font-medium text-foreground/90">{industry.cta}</span>
+                    <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
                   </div>
-                  <div className="p-6 flex-grow">
-                    <h4 className="text-xl font-heading font-semibold text-foreground mb-4">{industry.headline}</h4>
-                    <p className="text-muted-foreground mb-6">{industry.description}</p>
-                    <div className="flex items-center text-primary group-hover:text-primary/80 transition-colors">
-                      <span className="font-medium text-foreground/90">{industry.cta}</span>
-                      <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                      </svg>
-                    </div>
-                  </div>
-                </motion.div>
-              </a>
+                </div>
+              </motion.div>
             </Link>
           ))}
         </div>

@@ -140,7 +140,7 @@ export const services: Service[] = [
     ]
   },
   {
-    id: "outcome",
+    id: "outcome-based",
     icon: "fa-chart-pie",
     title: "Outcome-Based Engagements",
     description: "KPI-aligned billing and delivery that ensures our success is tied directly to yours.",
@@ -162,7 +162,7 @@ export const services: Service[] = [
     ]
   },
   {
-    id: "legal",
+    id: "legaltech",
     icon: "fa-balance-scale",
     title: "LegalTech Solutions",
     description: "E-discovery automation and contract analysis tools that save time and improve accuracy.",

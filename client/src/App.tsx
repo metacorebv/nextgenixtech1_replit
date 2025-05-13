@@ -21,6 +21,15 @@ import LegaltechPage from "@/pages/industries/LegaltechPage";
 import LogisticsPage from "@/pages/industries/LogisticsPage";
 import NotFound from "@/pages/not-found";
 
+// Service pages
+import CloudSmartPage from "@/pages/services/cloud-smart";
+import AIFirstPage from "@/pages/services/ai-first";
+import OutcomeBasedPage from "@/pages/services/outcome-based";
+import SecurityDeliveryPage from "@/pages/services/security-delivery";
+import HealthcareExpertisePage from "@/pages/services/healthcare";
+import LegalTechPage from "@/pages/services/legaltech";
+import DigitalMarketingPage from "@/pages/services/digital-marketing";
+
 // Admin pages
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import TestimonialsAdmin from "@/pages/admin/TestimonialsAdmin";
@@ -36,6 +45,13 @@ function Router() {
         {/* Public routes */}
         <Route path="/" component={Home} />
         <Route path="/services" component={ServicesPage} />
+        <Route path="/services/cloud-smart" component={CloudSmartPage} />
+        <Route path="/services/ai-first" component={AIFirstPage} />
+        <Route path="/services/outcome-based" component={OutcomeBasedPage} />
+        <Route path="/services/security-delivery" component={SecurityDeliveryPage} />
+        <Route path="/services/healthcare" component={HealthcareExpertisePage} />
+        <Route path="/services/legaltech" component={LegalTechPage} />
+        <Route path="/services/digital-marketing" component={DigitalMarketingPage} />
         <Route path="/why-choose-us" component={WhyChooseUsPage} />
         <Route path="/resources" component={ResourcesPage} />
         <Route path="/contact" component={ContactPage} />

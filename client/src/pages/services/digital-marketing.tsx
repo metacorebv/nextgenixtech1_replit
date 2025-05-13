@@ -3,8 +3,36 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import ContactSection from "@/components/ContactSection";
 import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 const DigitalMarketingPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
+  const solutions = [
+    {
+      icon: "fa-chart-line",
+      title: "Data-Driven Strategy",
+      description: "AI-powered analytics that transform raw data into actionable marketing insights and measurable business outcomes."
+    },
+    {
+      icon: "fa-bullseye",
+      title: "Precision Targeting",
+      description: "Advanced audience segmentation that delivers your message to the right people at the right time across all channels."
+    },
+    {
+      icon: "fa-robot",
+      title: "AI Content Optimization",
+      description: "Machine learning algorithms that continuously refine your content strategy based on real-time performance data."
+    },
+    {
+      icon: "fa-chart-pie",
+      title: "ROI-Focused Reporting",
+      description: "Transparent metrics that connect marketing activities directly to revenue generation and business growth."
+    }
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -18,182 +46,244 @@ const DigitalMarketingPage = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="py-20 md:py-28 bg-[color:var(--card)]/50">
+      <section className="pt-14 pb-24 md:pt-20 md:pb-32 relative overflow-hidden bg-[color:var(--background)] dark:bg-[color:var(--card)]/10">
+        <div className="absolute inset-0 bg-gradient-to-br from-[color:var(--background)] via-[color:var(--card)] to-[color:var(--card)] -z-10"></div>
+        <div className="absolute right-0 top-0 w-1/2 h-full opacity-10 -z-10 bg-[url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80')] bg-cover"></div>
+        
         <div className="container-custom">
-          <div className="max-w-3xl mx-auto text-center">
+          <div className="max-w-4xl">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary"
+            >
+              Digital Marketing Solutions
+            </motion.div>
+            
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6"
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold tracking-tight text-[color:var(--foreground)] leading-tight mb-6"
             >
-              Digital Marketing & Social Media
+              Results-Driven <span className="bg-gradient-to-r from-primary to-secondary text-gradient">Digital Marketing</span>
             </motion.h1>
-            <motion.p
+            
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-lg md:text-xl text-[color:var(--muted-foreground)] leading-relaxed mb-8 max-w-3xl"
+            >
+              In today's crowded digital landscape, we deliver marketing strategies that generate real business outcomes, not just vanity metrics. Our AI-powered approach focuses on leads, conversions, and revenue.
+            </motion.p>
+            
+            <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="text-xl md:text-2xl text-[color:var(--muted-foreground)] mb-8"
+              className="flex flex-wrap gap-4"
             >
-              Real leads, not vanity metrics
-            </motion.p>
+              <Link href="/contact">
+                <a className="px-6 py-3 rounded-2xl bg-primary text-white font-medium shadow-md hover:bg-primary/90 transition-colors duration-300">
+                  Book Your Free Marketing Audit
+                </a>
+              </Link>
+              <a href="#solutions" className="px-6 py-3 rounded-2xl bg-white text-neutral-900 font-medium shadow-md hover:bg-warm-gray-100 transition-colors duration-300">
+                Explore Solutions
+              </a>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Overview Section */}
-      <section className="py-16 md:py-24">
+      {/* Pain Points Section */}
+      <section className="py-16 bg-neutral-900 text-white">
         <div className="container-custom">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
-                AI-Powered Marketing That Delivers Results
-              </h2>
-              <p className="text-lg mb-6">
-                In today's crowded digital landscape, standing out requires more than just creative content—it demands data-driven strategies and AI-powered optimization. NextGenixTech's digital marketing solutions help businesses cut through the noise and connect with their target audience in meaningful ways.
-              </p>
-              <p className="text-lg mb-6">
-                Our AI-native approach analyzes customer behavior patterns, optimizes content for maximum engagement, and continuously refines campaigns based on real-time performance data. We focus on metrics that matter—leads, conversions, and revenue—not just likes and impressions.
-              </p>
-              <p className="text-lg">
-                Whether you're looking to establish a strong social media presence, optimize your SEO strategy, or create targeted ad campaigns, our team combines technical expertise with creative thinking to deliver marketing solutions that drive real business growth.
-              </p>
-            </div>
-            <div className="bg-[color:var(--card)] p-8 rounded-2xl border border-[color:var(--border)] shadow-lg">
-              <h3 className="text-2xl font-heading font-bold mb-6">Key Benefits</h3>
-              <ul className="space-y-4">
-                <li className="flex items-start">
-                  <div className="mr-4 mt-1 text-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="font-medium">AI-Driven Content Optimization</h4>
-                    <p className="text-[color:var(--muted-foreground)]">Machine learning algorithms that analyze engagement patterns and optimize content strategy in real-time</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <div className="mr-4 mt-1 text-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Predictive Analytics</h4>
-                    <p className="text-[color:var(--muted-foreground)]">Forecast campaign performance and identify emerging trends before your competitors</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <div className="mr-4 mt-1 text-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Automated Multi-Channel Campaigns</h4>
-                    <p className="text-[color:var(--muted-foreground)]">Seamlessly coordinate messaging across social media, email, and web platforms</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <div className="mr-4 mt-1 text-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="font-medium">ROI-Focused Reporting</h4>
-                    <p className="text-[color:var(--muted-foreground)]">Transparent metrics that connect marketing activities directly to business outcomes</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-heading font-bold mb-6">Marketing Challenges We Solve</h2>
+            <p className="text-warm-gray-300 max-w-3xl mx-auto">Today's businesses face significant obstacles in creating effective digital marketing strategies.</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="bg-neutral-800 rounded-2xl p-6"
+            >
+              <div className="w-12 h-12 bg-primary/20 flex items-center justify-center rounded-2xl mb-4">
+                <i className="fas fa-chart-bar text-primary text-xl"></i>
+              </div>
+              <h3 className="text-xl font-heading font-semibold mb-3">Vanity Metrics</h3>
+              <p className="text-warm-gray-300">Too many companies focus on likes and impressions instead of metrics that actually drive business growth.</p>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="bg-neutral-800 rounded-2xl p-6"
+            >
+              <div className="w-12 h-12 bg-primary/20 flex items-center justify-center rounded-2xl mb-4">
+                <i className="fas fa-bullhorn text-primary text-xl"></i>
+              </div>
+              <h3 className="text-xl font-heading font-semibold mb-3">Digital Noise</h3>
+              <p className="text-warm-gray-300">Standing out in an increasingly crowded digital landscape requires more than just creative content.</p>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="bg-neutral-800 rounded-2xl p-6"
+            >
+              <div className="w-12 h-12 bg-primary/20 flex items-center justify-center rounded-2xl mb-4">
+                <i className="fas fa-dollar-sign text-primary text-xl"></i>
+              </div>
+              <h3 className="text-xl font-heading font-semibold mb-3">ROI Uncertainty</h3>
+              <p className="text-warm-gray-300">Many businesses struggle to connect their marketing spend directly to revenue generation and business outcomes.</p>
+            </motion.div>
           </div>
         </div>
       </section>
-
+      
+      {/* Solutions Section */}
+      <section id="solutions" className="py-20 bg-[color:var(--background)] dark:bg-[color:var(--card)]/10">
+        <div className="container-custom">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-[color:var(--foreground)] mb-4">Our Digital Marketing Solutions</h2>
+            <p className="text-[color:var(--muted-foreground)] max-w-3xl mx-auto">AI-powered marketing strategies that deliver measurable business results.</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {solutions.map((solution, index) => (
+              <motion.div 
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 * (index % 2) }}
+                className="bg-[color:var(--card)] rounded-2xl shadow-md p-8 hover:shadow-lg transition-shadow duration-300 border border-[color:var(--border)]"
+              >
+                <div className="w-14 h-14 bg-primary/10 flex items-center justify-center rounded-2xl mb-6">
+                  <i className={`fas ${solution.icon} text-primary text-2xl`}></i>
+                </div>
+                <h3 className="text-xl font-heading font-semibold mb-3 text-[color:var(--foreground)]">{solution.title}</h3>
+                <p className="text-[color:var(--muted-foreground)]">{solution.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+      
       {/* Services Offered Section */}
       <section className="py-16 md:py-24 bg-[color:var(--card)]/30">
         <div className="container-custom">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-12 text-center">Our Digital Marketing Services</h2>
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-12 text-center">Comprehensive Marketing Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-[color:var(--card)] p-6 rounded-xl border border-[color:var(--border)] shadow-md">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                </svg>
+                <i className="fas fa-hashtag text-primary text-xl"></i>
               </div>
-              <h3 className="text-xl font-bold mb-3">Social Media Management</h3>
-              <p className="text-[color:var(--muted-foreground)]">AI-powered content creation, scheduling, and engagement monitoring across all major platforms.</p>
+              <h3 className="text-xl font-bold mb-3">Social Media Strategy</h3>
+              <p className="text-[color:var(--muted-foreground)]">Data-driven social media campaigns that build engagement and drive conversions across all major platforms.</p>
             </div>
             <div className="bg-[color:var(--card)] p-6 rounded-xl border border-[color:var(--border)] shadow-md">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+                <i className="fas fa-search text-primary text-xl"></i>
               </div>
-              <h3 className="text-xl font-bold mb-3">SEO Optimization</h3>
-              <p className="text-[color:var(--muted-foreground)]">Technical SEO audits, keyword research, and content optimization to improve organic visibility.</p>
+              <h3 className="text-xl font-bold mb-3">SEO & Content Marketing</h3>
+              <p className="text-[color:var(--muted-foreground)]">AI-optimized content strategies that improve organic visibility and establish thought leadership in your industry.</p>
             </div>
             <div className="bg-[color:var(--card)] p-6 rounded-xl border border-[color:var(--border)] shadow-md">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-                </svg>
+                <i className="fas fa-ad text-primary text-xl"></i>
               </div>
               <h3 className="text-xl font-bold mb-3">PPC & Paid Media</h3>
-              <p className="text-[color:var(--muted-foreground)]">Targeted ad campaigns with continuous optimization for maximum ROI across search and social platforms.</p>
+              <p className="text-[color:var(--muted-foreground)]">Precision-targeted ad campaigns with continuous optimization for maximum ROI across search and social platforms.</p>
             </div>
             <div className="bg-[color:var(--card)] p-6 rounded-xl border border-[color:var(--border)] shadow-md">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
+                <i className="fas fa-envelope text-primary text-xl"></i>
               </div>
-              <h3 className="text-xl font-bold mb-3">Email Marketing</h3>
-              <p className="text-[color:var(--muted-foreground)]">Personalized email campaigns with AI-driven segmentation and content optimization.</p>
+              <h3 className="text-xl font-bold mb-3">Email Marketing Automation</h3>
+              <p className="text-[color:var(--muted-foreground)]">Personalized email journeys with AI-driven segmentation that nurture leads and drive conversions.</p>
             </div>
             <div className="bg-[color:var(--card)] p-6 rounded-xl border border-[color:var(--border)] shadow-md">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                </svg>
+                <i className="fas fa-analytics text-primary text-xl"></i>
               </div>
-              <h3 className="text-xl font-bold mb-3">Content Marketing</h3>
-              <p className="text-[color:var(--muted-foreground)]">Strategic content creation and distribution to establish thought leadership and drive engagement.</p>
+              <h3 className="text-xl font-bold mb-3">Analytics & Attribution</h3>
+              <p className="text-[color:var(--muted-foreground)]">Advanced tracking and attribution models that connect marketing activities directly to revenue generation.</p>
             </div>
             <div className="bg-[color:var(--card)] p-6 rounded-xl border border-[color:var(--border)] shadow-md">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
+                <i className="fas fa-funnel-dollar text-primary text-xl"></i>
               </div>
-              <h3 className="text-xl font-bold mb-3">Analytics & Reporting</h3>
-              <p className="text-[color:var(--muted-foreground)]">Comprehensive performance tracking with actionable insights to continuously improve marketing ROI.</p>
+              <h3 className="text-xl font-bold mb-3">Conversion Rate Optimization</h3>
+              <p className="text-[color:var(--muted-foreground)]">Data-driven testing and optimization that turns more of your visitors into customers and maximizes marketing ROI.</p>
             </div>
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <section className="py-16 md:py-24">
+      
+      {/* Case Study Section */}
+      <section className="py-20 bg-warm-gray-100">
         <div className="container-custom">
-          <div className="bg-gradient-to-r from-primary/20 to-secondary/20 rounded-2xl p-8 md:p-12">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Ready to Transform Your Digital Presence?</h2>
-              <p className="text-lg mb-8">
-                Book a free digital marketing audit and discover how our AI-powered approach can help you achieve measurable results.
-              </p>
-              <Link to="/contact">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-white">
-                  Book Your Free Audit
-                </Button>
-              </Link>
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-2">
+              <div className="p-8 lg:p-12">
+                <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-accent/10 text-accent mb-6">
+                  Case Study
+                </div>
+                <h2 className="text-2xl md:text-3xl font-heading font-bold text-neutral-900 mb-4">3.5x ROI increase for B2B SaaS company</h2>
+                <p className="text-neutral-700 mb-6">A growing B2B software company was struggling with high customer acquisition costs and low conversion rates from their digital marketing efforts.</p>
+                
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-start">
+                    <i className="fas fa-check-circle text-primary mt-1 mr-3 text-lg"></i>
+                    <div>
+                      <h4 className="font-semibold">Challenge</h4>
+                      <p className="text-neutral-700">Despite significant ad spend, the company was generating leads that rarely converted to customers, resulting in poor marketing ROI.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <i className="fas fa-check-circle text-primary mt-1 mr-3 text-lg"></i>
+                    <div>
+                      <h4 className="font-semibold">Solution</h4>
+                      <p className="text-neutral-700">We implemented our AI-driven marketing approach, including precision audience targeting, content optimization, and a complete funnel redesign.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <i className="fas fa-check-circle text-primary mt-1 mr-3 text-lg"></i>
+                    <div>
+                      <h4 className="font-semibold">Result</h4>
+                      <p className="text-neutral-700">3.5x increase in marketing ROI, 42% reduction in cost per acquisition, and 67% improvement in lead-to-customer conversion rate.</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <Link href="/contact">
+                  <a className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-2xl text-white bg-primary hover:bg-primary/90 transition-colors">
+                    Book Your Free Marketing Audit
+                  </a>
+                </Link>
+              </div>
+              
+              <div className="bg-[url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80')] bg-cover bg-center h-64 lg:h-auto"></div>
             </div>
           </div>
         </div>
       </section>
+      
+      <ContactSection />
     </motion.div>
   );
 };

@@ -11,24 +11,24 @@ const OutcomeBasedPage = () => {
   
   const benefits = [
     {
-      icon: "fa-handshake",
+      icon: "fa-chart-line",
       title: "Performance-Based Contracts",
-      description: "Engagement models where our compensation is directly tied to achieving your business outcomes."
+      description: "Billing structures tied directly to measurable business outcomes, not just time and materials."
     },
     {
       icon: "fa-bullseye",
       title: "KPI Definition & Tracking",
-      description: "Collaborative development of clear, measurable KPIs that align technology initiatives with business goals."
+      description: "Clear metrics established at project start with transparent tracking throughout the engagement."
     },
     {
       icon: "fa-sync",
       title: "Continuous Optimization",
-      description: "Ongoing refinement of solutions based on performance data to ensure sustained value delivery."
+      description: "Ongoing refinement of solutions based on performance data to maximize business impact."
     },
     {
-      icon: "fa-chart-bar",
-      title: "Value Measurement",
-      description: "Sophisticated analytics that quantify the business impact of technology investments."
+      icon: "fa-handshake",
+      title: "Aligned Incentives",
+      description: "Our success is directly tied to your success, creating true partnership rather than vendor relationships."
     }
   ];
 
@@ -41,7 +41,7 @@ const OutcomeBasedPage = () => {
     >
       <Helmet>
         <title>Outcome-Based Engagements - NextGenixTech</title>
-        <meta name="description" content="Outcome-Based Engagements - KPI-aligned billing and delivery that ensures our success is tied directly to yours." />
+        <meta name="description" content="KPI-aligned billing and delivery that ensures our success is tied directly to yours. We bill by results, not hours." />
       </Helmet>
       
       {/* Hero Section */}
@@ -74,7 +74,7 @@ const OutcomeBasedPage = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-lg md:text-xl text-[color:var(--muted-foreground)] leading-relaxed mb-8 max-w-3xl"
             >
-              We bill by results, not hours. Our outcome-based engagement model ensures our success is directly tied to achieving your business objectives.
+              We bill by results, not hours. Our success is directly tied to your success through KPI-aligned billing and delivery models.
             </motion.p>
           </div>
         </div>
@@ -88,15 +88,15 @@ const OutcomeBasedPage = () => {
             
             <div className="space-y-6 text-[color:var(--muted-foreground)]">
               <p>
-                Traditional IT consulting models bill by the hour, creating a misalignment of incentives—the longer a project takes, the more the consultant earns. This approach often leads to scope creep, budget overruns, and a focus on activity rather than results.
+                Traditional IT consulting models are fundamentally misaligned with client interests. When consultants bill by the hour, they're incentivized to extend projects and maximize billable time—not to deliver results efficiently.
               </p>
               
               <p>
-                Our outcome-based engagement model fundamentally changes this dynamic. We work with you to define clear, measurable business outcomes, and our compensation is directly tied to achieving these results. This creates a true partnership where we succeed only when you succeed.
+                Our outcome-based engagement model flips this dynamic. We establish clear, measurable KPIs at the start of every project and tie our compensation directly to achieving those metrics. This creates true alignment between our teams and ensures we're focused on delivering real business value, not just billable hours.
               </p>
               
               <p>
-                By aligning our incentives with your business goals, we ensure that every decision, recommendation, and implementation is focused on delivering real value. This isn't just a billing model—it's a commitment to shared success and a fundamentally different way of working together.
+                By sharing both risk and reward, we become genuine partners in your success. This approach drives us to work more efficiently, innovate more boldly, and focus relentlessly on the outcomes that matter most to your business.
               </p>
             </div>
           </div>
@@ -107,8 +107,8 @@ const OutcomeBasedPage = () => {
       <section id="benefits" className="py-20 bg-[color:var(--background)] dark:bg-[color:var(--card)]/10">
         <div className="container-custom">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-[color:var(--foreground)] mb-4">Key Components</h2>
-            <p className="text-[color:var(--muted-foreground)] max-w-3xl mx-auto">Our outcome-based approach ensures alignment, accountability, and measurable results.</p>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-[color:var(--foreground)] mb-4">Key Benefits</h2>
+            <p className="text-[color:var(--muted-foreground)] max-w-3xl mx-auto">Our outcome-based approach delivers measurable advantages over traditional consulting models.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -141,14 +141,51 @@ const OutcomeBasedPage = () => {
                 <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-accent/10 text-accent mb-6">
                   Case Study
                 </div>
-                <h2 className="text-2xl md:text-3xl font-heading font-bold text-neutral-900 mb-4">25% revenue increase through outcome-based partnership</h2>
-                <p className="text-neutral-700 mb-6">A mid-sized retailer was frustrated with technology investments that weren't delivering measurable business results.</p>
+                <h2 className="text-2xl md:text-3xl font-heading font-bold text-neutral-900 mb-4">25% revenue increase for e-commerce platform</h2>
+                <p className="text-neutral-700 mb-6">An e-commerce company was struggling with cart abandonment and conversion rates despite investing heavily in traditional consulting services.</p>
                 
                 <div className="space-y-4 mb-8">
                   <div className="flex items-start">
                     <i className="fas fa-check-circle text-primary mt-1 mr-3 text-lg"></i>
                     <div>
                       <h4 className="font-semibold">Challenge</h4>
-                      <p className="text-neutral-700">Previous IT initiatives had consumed significant budget without clear ROI or impact on key business metrics.</p>
+                      <p className="text-neutral-700">Previous consultants had billed over $500K for recommendations that failed to move key business metrics.</p>
                     </div>
-                  </div
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <i className="fas fa-check-circle text-primary mt-1 mr-3 text-lg"></i>
+                    <div>
+                      <h4 className="font-semibold">Solution</h4>
+                      <p className="text-neutral-700">We implemented an outcome-based engagement focused on conversion rate and average order value, with our fees tied directly to improvements.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <i className="fas fa-check-circle text-primary mt-1 mr-3 text-lg"></i>
+                    <div>
+                      <h4 className="font-semibold">Result</h4>
+                      <p className="text-neutral-700">Conversion rate increased by 32%, average order value by 18%, resulting in 25% revenue growth within 6 months.</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <Link href="/contact">
+                  <a className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-2xl text-white bg-primary hover:bg-primary/90 transition-colors">
+                    Explore Outcome-Based Models
+                  </a>
+                </Link>
+              </div>
+              
+              <div className="bg-[url('https://images.unsplash.com/photo-1553729459-efe14ef6055d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80')] bg-cover bg-center h-64 lg:h-auto"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <ContactSection />
+    </motion.div>
+  );
+};
+
+export default OutcomeBasedPage;

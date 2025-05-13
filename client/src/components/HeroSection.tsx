@@ -120,7 +120,7 @@ const HeroSection = () => {
             variants={itemVariants}
             className="mt-10 flex justify-center gap-4 flex-col sm:flex-row"
           >
-            <Link href="/contact">
+            <Link href="/contact#book-meeting">
               <motion.div 
                 className="px-8 py-4 rounded-2xl bg-primary text-[color:var(--background)] font-medium shadow-lg hover:shadow-primary/30 hover:scale-105 transition-all duration-300 flex items-center justify-center"
                 whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(var(--primary), 0.4)" }}

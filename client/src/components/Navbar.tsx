@@ -124,7 +124,7 @@ const Navbar = () => {
           {/* CTA Button - Desktop */}
           <div className="hidden md:flex items-center">
             <Button asChild className="rounded-2xl bg-gradient-to-r from-primary to-secondary hover:shadow-lg hover:shadow-primary/20 transition-all duration-300">
-              <Link href="/contact">
+              <Link href="/contact#book-meeting">
                 🎯 Book a Free Tech Audit
               </Link>
             </Button>

@@ -82,6 +82,10 @@
   --ring: 260 70% 55%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 @layer base {
   * {
     @apply border-border;

@@ -72,7 +72,7 @@ const IndustriesSection = () => {
     {
       id: "logistics",
       title: "Logistics",
-      image: "https://images.unsplash.com/photo-1529070538774-1843cb3265df?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+      image: "https://images.unsplash.com/photo-1505839673365-e3971f8d9184?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
       headline: "Predictive AI for Supply Chain & Fleet Optimization",
       description: "Minimize downtime and route inefficiency with AI-powered logistics solutions.",
       cta: "Explore Logistics Solutions"

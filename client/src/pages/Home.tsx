@@ -22,10 +22,10 @@ const Home = () => {
       </Helmet>
       
       <HeroSection />
-      <TestimonialsSection />
       <ServicesSection />
       <IndustriesSection />
       <WhyChooseUsSection />
+      <TestimonialsSection />
       <ResourcesSection />
       <ContactSection />
     </motion.div>

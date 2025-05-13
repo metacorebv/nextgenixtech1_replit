@@ -1,324 +1,270 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, useAnimation, useInView } from "framer-motion";
-import { useQuery } from "@tanstack/react-query";
-import { getQueryFn } from "../lib/queryClient";
-import { testimonials as defaultTestimonials } from "../lib/data";
-import { Testimonial, TestimonialUI } from "../lib/types";
+import { motion, AnimatePresence } from "framer-motion";
 
-// Helper function to map API testimonial to UI format
-const mapApiToUiTestimonial = (apiTestimonial: Testimonial): TestimonialUI => {
-  return {
-    name: apiTestimonial.name,
-    position: apiTestimonial.position,
-    company: apiTestimonial.company,
-    metric: apiTestimonial.metric || "",
-    title: apiTestimonial.metricTitle || "",
-    description: apiTestimonial.testimonial,
-    image: apiTestimonial.imageUrl || "",
-  };
-};
+interface Testimonial {
+  quote: string;
+  name: string;
+  role: string;
+  avatar: string;
+}
 
 const TestimonialsSection = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const controls = useAnimation();
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
   
-  // Fetch testimonials from the API
-  const { data: apiTestimonials, isLoading, error } = useQuery({
-    queryKey: ['/api/testimonials'],
-    queryFn: getQueryFn<{ data: Testimonial[] }>({ on401: "returnNull" }),
-    enabled: true,
-  });
-  
-  // Process API testimonials to UI format if available, otherwise use default data
-  const testimonials: TestimonialUI[] = apiTestimonials?.data 
-    ? apiTestimonials.data
-        .filter(t => t.isActive)
-        .map(mapApiToUiTestimonial)
-    : defaultTestimonials;
+  // Track touch events for mobile swipe
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
-  useEffect(() => {
-    if (isInView) {
-      controls.start("visible");
+  const testimonials: Testimonial[] = [
+    {
+      quote: "NextGenixTech transformed our fraud detection pipeline. Their AI-native solutions helped us reduce false positives by over 40%, and their regulatory reporting automation saved weeks of compliance overhead each quarter.",
+      name: "John Smith",
+      role: "VP of Engineering, Global Payments Platform",
+      avatar: "https://i.pravatar.cc/150?img=1"
+    },
+    {
+      quote: "We needed a partner who understood both AI and healthcare compliance. NextGenixTech delivered a fully secure, HIPAA-compliant data platform that's powering predictive diagnostics across our patient network.",
+      name: "Sarah Johnson",
+      role: "CTO, AI Health Diagnostics Company",
+      avatar: "https://i.pravatar.cc/150?img=5"
+    },
+    {
+      quote: "NextGenixTech helped us shift from reactive to predictive logistics. Their cloud-smart architecture and embedded ML models now help us forecast demand spikes and avoid last-minute disruptions.",
+      name: "Michael Chen",
+      role: "COO, Global Logistics Provider",
+      avatar: "https://i.pravatar.cc/150?img=3"
+    },
+    {
+      quote: "Their e-discovery automation changed the game for our law firm. What took teams 10+ hours is now handled in minutes with AI-powered sorting and summarization.",
+      name: "Jennifer Williams",
+      role: "Managing Partner, Corporate Law Firm",
+      avatar: "https://i.pravatar.cc/150?img=9"
+    },
+    {
+      quote: "They didn't just suggest trendy tech—they delivered AI and cloud solutions mapped to our growth metrics. The outcome-based pricing gave us confidence they were invested in our success.",
+      name: "David Rodriguez",
+      role: "Head of Strategy, SaaS Startup",
+      avatar: "https://i.pravatar.cc/150?img=12"
+    },
+    {
+      quote: "Security was not bolted on—it was built in from day one. Their DevSecOps pipelines ensured every release passed automated security checks without slowing velocity.",
+      name: "Emily Taylor",
+      role: "VP of Product, Cybersecurity Platform",
+      avatar: "https://i.pravatar.cc/150?img=20"
+    },
+    {
+      quote: "We tripled our organic reach in under 90 days. Their AI-led marketing stack gave us real leads—not vanity metrics.",
+      name: "Alex Thompson",
+      role: "Director of Growth, D2C eCommerce Brand",
+      avatar: "https://i.pravatar.cc/150?img=15"
     }
-  }, [controls, isInView]);
+  ];
 
-  const getVisibleSlides = () => {
-    if (typeof window !== "undefined") {
-      return window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
-    }
-    return 3;
+  const nextTestimonial = () => {
+    setDirection(1);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
   };
 
-  const visibleSlides = getVisibleSlides();
-  const maxSlide = Math.max(0, testimonials.length - visibleSlides);
-  
-  useEffect(() => {
-    // Reset current slide when testimonials change
-    setCurrentSlide(0);
-  }, [testimonials]);
-  
+  const prevTestimonial = () => {
+    setDirection(-1);
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
+  };
+
+  // Handle touch events for swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current && touchEndX.current) {
+      const diff = touchStartX.current - touchEndX.current;
+      
+      // If the swipe is significant enough (more than 50px)
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+          // Swipe left, go to next
+          handleManualNavigation(nextTestimonial);
+        } else {
+          // Swipe right, go to previous
+          handleManualNavigation(prevTestimonial);
+        }
+      }
+    }
+    
+    // Reset values
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
   // Auto-rotate testimonials
   useEffect(() => {
-    if (testimonials.length <= 1) return;
-    
-    const interval = setInterval(() => {
-      setCurrentSlide(prev => {
-        if (prev >= maxSlide) {
-          return 0;
+    const startAutoRotation = () => {
+      intervalRef.current = setInterval(() => {
+        if (!isPaused) {
+          nextTestimonial();
         }
-        return prev + 1;
-      });
-    }, 5000); // Change slide every 5 seconds
-    
-    return () => clearInterval(interval);
-  }, [testimonials.length, maxSlide]);
+      }, 1000); // Reduced from 7000 to 1000 (1 second) Animation time
+    };
 
-  const goToSlide = (slideIndex: number) => {
-    if (slideIndex < 0) slideIndex = 0;
-    if (slideIndex > maxSlide) slideIndex = maxSlide;
-    setCurrentSlide(slideIndex);
+    startAutoRotation();
+
+    // Cleanup on unmount
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isPaused]);
+
+  // Reset interval when manually navigating
+  const handleManualNavigation = (callback: () => void) => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    callback();
+    intervalRef.current = setInterval(() => {
+      if (!isPaused) {
+        nextTestimonial();
+      }
+    }, 4000); // Reduced from 7000 to 4000 (4 seconds)
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? '100%' : '-100%',
+      opacity: 0
+    }),
+    center: {
+      x: 0,
+      opacity: 1
+    },
+    exit: (direction: number) => ({
+      x: direction < 0 ? '100%' : '-100%',
+      opacity: 0
+    })
   };
 
   return (
-    <section className="py-16 bg-gradient-to-b from-background/50 via-background to-background/90 text-foreground relative overflow-hidden">
-      {/* Animated gradient orbs */}
-      <motion.div 
-        className="absolute top-20 left-10 w-72 h-72 rounded-full bg-primary/10 blur-3xl -z-10"
-        animate={{ 
-          x: [0, 30, 0], 
-          y: [0, -20, 0],
-          scale: [1, 1.1, 1], 
-          opacity: [0.2, 0.3, 0.2] 
-        }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-      />
-      
-      <motion.div 
-        className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-secondary/10 blur-3xl -z-10"
-        animate={{ 
-          x: [0, -30, 0], 
-          y: [0, 20, 0],
-          scale: [1, 1.2, 1], 
-          opacity: [0.1, 0.2, 0.1] 
-        }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-      />
-      
+    <section className="py-20 bg-[color:var(--background)] dark:bg-[color:var(--card)]/10">
       <div className="container-custom">
-        <motion.div 
-          ref={ref}
-          variants={containerVariants}
-          initial="hidden"
-          animate={controls}
-          className="text-center mb-10"
-        >
+        <div className="text-center mb-16">
           <motion.h2 
-            variants={itemVariants}
-            className="text-3xl md:text-4xl font-heading font-bold"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-3xl md:text-4xl font-heading font-bold text-[color:var(--foreground)]"
           >
-            Real Results for <span className="text-gradient bg-gradient-to-r from-primary via-secondary to-accent">Real Businesses</span>
+            What Our <span className="bg-gradient-to-r from-primary to-secondary text-gradient">Clients Say</span>
           </motion.h2>
-          <motion.p 
-            variants={itemVariants}
-            className="mt-4 text-muted-foreground max-w-2xl mx-auto"
-          >
-            Our clients experience measurable outcomes and transformative results. 
-            Here's what they have to say about working with NextGenixTech.
-          </motion.p>
-        </motion.div>
+        </div>
         
-        {isLoading ? (
-          <div className="flex justify-center py-12">
-            <motion.div 
-              className="h-16 w-16 rounded-full border-t-2 border-r-2 border-primary/80"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-            />
-          </div>
-        ) : error ? (
-          <div className="text-center py-8 max-w-lg mx-auto bg-destructive/10 rounded-xl p-6 border border-destructive/30">
-            <i className="fas fa-exclamation-triangle text-destructive text-2xl mb-3"></i>
-            <p className="text-foreground/90">Could not load testimonials. Please try again later.</p>
-            <button 
-              className="mt-4 px-4 py-2 bg-primary/20 hover:bg-primary/30 text-primary rounded-md transition-colors"
-              onClick={() => window.location.reload()}
-            >
-              Retry
-            </button>
-          </div>
-        ) : (
-          <div className="relative">
-            <div className="overflow-hidden" id="testimonial-carousel">
-              <motion.div 
-                className="flex"
-                animate={{ 
-                  translateX: `-${currentSlide * (100 / visibleSlides)}%` 
+        <div 
+          className="relative max-w-4xl mx-auto"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          ref={carouselRef}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Testimonial Carousel */}
+          <div className="relative overflow-hidden min-h-[400px] md:min-h-[350px]">
+            <AnimatePresence custom={direction} initial={false}>
+              <motion.div
+                key={currentIndex}
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 200, damping: 25 },
+                  opacity: { duration: 0.2 }
                 }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="absolute w-full"
               >
-                {testimonials.map((testimonial, index) => (
-                  <motion.div 
-                    key={index}
-                    className={`w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4`}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 * index }}
-                  >
-                    <motion.div 
-                      className="bg-gradient-to-br from-card/90 to-card rounded-2xl p-6 shadow-lg border border-primary/10 h-full backdrop-blur-sm"
-                      whileHover={{ y: -5, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)" }}
-                      initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <div className="flex items-center mb-4">
-                        <motion.div 
-                          className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white"
-                          animate={{ 
-                            rotate: [0, 5, 0, -5, 0],
-                            scale: [1, 1.05, 1, 1.05, 1]
-                          }}
-                          transition={{ 
-                            duration: 6, 
-                            repeat: Infinity, 
-                            ease: "easeInOut",
-                            delay: index * 0.2
-                          }}
-                        >
-                          <i className="fas fa-quote-left"></i>
-                        </motion.div>
-                        <div className="ml-3">
-                          <h3 className="text-lg font-semibold text-foreground">{testimonial.title}</h3>
+                <div className="bg-[color:var(--card)] rounded-2xl shadow-lg p-8 md:p-10 border border-[color:var(--border)]">
+                  <div className="flex flex-col items-center">
+                    <div className="mb-6">
+                      <svg className="w-10 h-10 text-primary/30" fill="currentColor" viewBox="0 0 32 32">
+                        <path d="M10,8H6a2,2,0,0,0-2,2v4a2,2,0,0,0,2,2h4V8Zm0,0" />
+                        <path d="M10,16H6a2,2,0,0,0-2,2v4a2,2,0,0,0,2,2h4V16Zm0,0" />
+                        <path d="M26,8H22a2,2,0,0,0-2,2v4a2,2,0,0,0,2,2h4V8Zm0,0" />
+                        <path d="M26,16H22a2,2,0,0,0-2,2v4a2,2,0,0,0,2,2h4V16Zm0,0" />
+                      </svg>
+                    </div>
+                    <p className="text-[color:var(--foreground)] text-lg md:text-xl leading-relaxed mb-8 text-center max-h-[200px] overflow-y-auto">
+                      {testimonials[currentIndex].quote}
+                    </p>
+                    <div className="flex items-center">
+                      <div className="w-16 h-16 rounded-full overflow-hidden mr-4 border-2 border-primary/20 flex-shrink-0">
+                        <img 
+                          src={testimonials[currentIndex].avatar} 
+                          alt={testimonials[currentIndex].name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="text-left">
+                        <h4 className="font-semibold text-[color:var(--foreground)]">{testimonials[currentIndex].name}</h4>
+                        <div className="text-[color:var(--muted-foreground)] text-sm">
+                          {testimonials[currentIndex].role}
                         </div>
                       </div>
-                      
-                      <div className="mb-6">
-                        <motion.div 
-                          className="text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-accent text-gradient"
-                          initial={{ opacity: 0.8, scale: 0.95 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
-                          transition={{ duration: 0.8 }}
-                        >
-                          {testimonial.metric}
-                        </motion.div>
-                      </div>
-                      
-                      <p className="text-foreground/80 mb-6 text-base leading-relaxed italic relative pl-2">
-                        <span className="absolute left-0 top-0 text-primary/40 text-2xl font-serif">"</span>
-                        {testimonial.description}
-                        <span className="text-primary/40 text-2xl font-serif">"</span>
-                      </p>
-                      
-                      <div className="mt-6 flex items-center">
-                        <div className="flex-shrink-0">
-                          <motion.div 
-                            className="h-12 w-12 rounded-full overflow-hidden shadow-xl border-2 border-primary/30"
-                            whileHover={{ scale: 1.1, borderColor: "rgba(var(--primary), 0.5)" }}
-                          >
-                            {testimonial.image ? (
-                              <img 
-                                src={testimonial.image} 
-                                alt={testimonial.name}
-                                className="h-full w-full object-cover"
-                              />
-                            ) : (
-                              <div className="h-full w-full bg-primary/20 flex items-center justify-center">
-                                <i className="fas fa-user text-foreground/60"></i>
-                              </div>
-                            )}
-                          </motion.div>
-                        </div>
-                        <div className="ml-3">
-                          <p className="text-sm font-medium text-foreground">{testimonial.name}</p>
-                          <p className="text-xs text-muted-foreground">{testimonial.position}, <span className="text-primary/80">{testimonial.company}</span></p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </motion.div>
-                ))}
+                    </div>
+                  </div>
+                </div>
               </motion.div>
-            </div>
-            
-            {testimonials.length > visibleSlides && (
-              <>
-                <motion.button 
-                  className="absolute -left-3 lg:left-2 top-1/2 -translate-y-1/2 bg-primary/10 backdrop-blur-sm text-foreground rounded-full w-12 h-12 flex items-center justify-center shadow-lg border border-primary/20 hover:border-primary/50 z-10 focus:outline-none" 
-                  onClick={() => goToSlide(currentSlide - 1)}
-                  disabled={currentSlide === 0}
-                  whileHover={{ scale: 1.1, x: -5, backgroundColor: "rgba(var(--primary), 0.2)" }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <i className="fas fa-chevron-left text-primary"></i>
-                </motion.button>
-                <motion.button 
-                  className="absolute -right-3 lg:right-2 top-1/2 -translate-y-1/2 bg-primary/10 backdrop-blur-sm text-foreground rounded-full w-12 h-12 flex items-center justify-center shadow-lg border border-primary/20 hover:border-primary/50 z-10 focus:outline-none" 
-                  onClick={() => goToSlide(currentSlide + 1)}
-                  disabled={currentSlide === maxSlide}
-                  whileHover={{ scale: 1.1, x: 5, backgroundColor: "rgba(var(--primary), 0.2)" }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <i className="fas fa-chevron-right text-primary"></i>
-                </motion.button>
-              </>
-            )}
+            </AnimatePresence>
           </div>
-        )}
-        
-        {/* Navigation dots for mobile */}
-        {testimonials.length > 1 && (
-          <motion.div 
-            className="flex justify-center mt-8 space-x-2"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.3 }}
+          
+          {/* Navigation Arrows */}
+          <button 
+            onClick={() => handleManualNavigation(prevTestimonial)}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 md:-translate-x-10 w-10 h-10 rounded-full bg-[color:var(--card)] border border-[color:var(--border)] shadow-md flex items-center justify-center text-[color:var(--foreground)] hover:bg-[color:var(--accent)] transition-colors z-10"
+            aria-label="Previous testimonial"
           >
-            {Array.from({ length: testimonials.length }).map((_, index) => (
-              <motion.button
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button 
+            onClick={() => handleManualNavigation(nextTestimonial)}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 md:translate-x-10 w-10 h-10 rounded-full bg-[color:var(--card)] border border-[color:var(--border)] shadow-md flex items-center justify-center text-[color:var(--foreground)] hover:bg-[color:var(--accent)] transition-colors z-10"
+            aria-label="Next testimonial"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+          
+          {/* Dots Indicator */}
+          <div className="flex justify-center mt-8 space-x-2">
+            {testimonials.map((_, index) => (
+              <button
                 key={index}
-                onClick={() => goToSlide(index)}
-                className={`mx-1 h-3 w-3 rounded-full transition-all duration-300 border ${
-                  index === currentSlide 
-                    ? 'bg-primary border-primary scale-110' 
-                    : 'bg-primary/10 border-primary/30 hover:bg-primary/20'
+                onClick={() => {
+                  setDirection(index > currentIndex ? 1 : -1);
+                  handleManualNavigation(() => setCurrentIndex(index));
+                }}
+                className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                  index === currentIndex 
+                    ? 'bg-primary' 
+                    : 'bg-[color:var(--border)] hover:bg-[color:var(--muted-foreground)]'
                 }`}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
-                aria-label={`Go to slide ${index + 1}`}
+                aria-label={`Go to testimonial ${index + 1}`}
               />
             ))}
-          </motion.div>
-        )}
+          </div>
+        </div>
       </div>
     </section>
   );

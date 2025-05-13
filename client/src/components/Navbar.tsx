@@ -22,12 +22,15 @@ const Navbar = () => {
     { text: "Home", href: "/" },
     { 
       text: "Services", 
-      href: "/services",
+      href: "#",  // Changed from "/services" to "#"
       dropdown: [
-        { text: "Cloud-Smart Solutions", href: "/services#cloud" },
-        { text: "AI-First Services", href: "/services#ai" },
-        { text: "Outcome-Based Engagements", href: "/services#outcome" },
-        { text: "Security-Embedded Delivery", href: "/services#security" },
+        { text: "Cloud-Smart Solutions", href: "/services/cloud-smart" },
+        { text: "AI-First Services", href: "/services/ai-first" },
+        { text: "Outcome-Based Engagements", href: "/services/outcome-based" },
+        { text: "Security-Embedded Delivery", href: "/services/security-delivery" },
+        { text: "Healthcare Expertise", href: "/services/healthcare" },
+        { text: "LegalTech Solutions", href: "/services/legaltech" },
+        { text: "Digital Marketing", href: "/services/digital-marketing" },
       ] 
     },
     { 

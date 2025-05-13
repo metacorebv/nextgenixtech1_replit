@@ -109,6 +109,17 @@ const ServicesSection = () => {
         "Automated compliance verification",
         "Zero-trust architecture implementation"
       ]
+    },
+    {
+      id: "marketing",
+      icon: "fa-bullhorn",
+      title: "Digital Marketing",
+      description: "AI-powered digital marketing solutions that deliver real leads and measurable ROI, not just vanity metrics.",
+      features: [
+        "Data-driven strategy",
+        "Precision targeting",
+        "ROI-focused reporting"
+      ]
     }
   ];
 
@@ -168,7 +179,15 @@ const ServicesSection = () => {
                   </motion.li>
                 ))}
               </ul>
-              <Link href={`/services/${service.id.replace('cloud', 'cloud-smart')}`} className="text-primary hover:text-primary/80 font-medium flex items-center transition-colors group-hover:translate-x-1 duration-300">
+              <Link href={`/services/${
+                service.id === 'cloud' ? 'cloud-smart' : 
+                service.id === 'ai' ? 'ai-first' : 
+                service.id === 'outcome' ? 'outcome-based' : 
+                service.id === 'legal' ? 'legaltech' : 
+                service.id === 'security' ? 'security-delivery' : 
+                service.id === 'marketing' ? 'digital-marketing' : 
+                service.id
+              }`} className="text-primary hover:text-primary/80 font-medium flex items-center transition-colors group-hover:translate-x-1 duration-300">
                 Learn more
                 <motion.svg 
                   className="w-5 h-5 ml-1" 

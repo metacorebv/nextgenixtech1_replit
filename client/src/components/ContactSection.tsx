@@ -8,6 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { CalendlyInline } from "./CalendlyInline";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -199,12 +200,7 @@ const ContactSection = () => {
             className="mt-12 text-center"
           >
             <p className="text-warm-gray-300">Prefer to schedule a call?</p>
-            <a 
-              href="#" 
-              className="mt-4 inline-flex items-center px-6 py-3 border border-warm-gray-500 text-base font-medium rounded-2xl text-white hover:bg-warm-gray-700 transition-colors"
-            >
-              <i className="far fa-calendar-alt mr-2"></i> Book a Meeting
-            </a>
+            <CalendlyInline />
           </motion.div>
         </div>
       </div>

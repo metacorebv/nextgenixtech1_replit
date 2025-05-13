@@ -168,7 +168,7 @@ const ServicesSection = () => {
                   </motion.li>
                 ))}
               </ul>
-              <Link href={`/services/${service.id.replace('cloud', 'cloud-smart')}`} className="text-primary hover:text-primary/80 font-medium flex items-center transition-colors group-hover:translate-x-1 duration-300">
+              <Link href={`/services/${service.id}`} className="text-primary hover:text-primary/80 font-medium flex items-center transition-colors group-hover:translate-x-1 duration-300">
                 Learn more
                 <motion.svg 
                   className="w-5 h-5 ml-1" 

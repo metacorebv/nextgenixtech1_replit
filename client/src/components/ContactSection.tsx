@@ -185,7 +185,7 @@ const ContactSection = () => {
                 <div className="text-center">
                   <Button 
                     type="submit" 
-                    className="px-6 py-3 rounded-2xl text-neutral-900 bg-accent hover:bg-accent/90 transition-colors"
+                    className="px-6 py-3 rounded-2xl text-white bg-primary hover:bg-primary/90 transition-colors"
                   >
                     Submit Request
                   </Button>

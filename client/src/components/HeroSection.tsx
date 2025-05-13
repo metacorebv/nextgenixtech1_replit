@@ -1,7 +1,3 @@
-The change updates the CTA link in the HeroSection component to scroll to the Calendly widget on the Contact page.
-```
-
-```replit_final_file
 import { useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { motion, useAnimation, useInView } from "framer-motion";
@@ -73,7 +69,7 @@ const HeroSection = () => {
         }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
-
+      
       {/* Animated shapes */}
       <motion.div 
         className="absolute right-[20%] top-[15%] w-64 h-64 rounded-full bg-secondary/10 blur-3xl -z-10"
@@ -85,7 +81,7 @@ const HeroSection = () => {
         }}
         transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
       />
-
+      
       <motion.div 
         className="absolute left-[15%] bottom-[10%] w-80 h-80 rounded-full bg-accent/10 blur-3xl -z-10"
         animate={{ 
@@ -96,7 +92,7 @@ const HeroSection = () => {
         }}
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
       />
-
+      
       {/* Main content */}
       <div className="container-custom relative z-10">
         <motion.div 
@@ -112,14 +108,14 @@ const HeroSection = () => {
           >
             AI-Native. Secure by Design. <span className="text-gradient bg-gradient-to-r from-primary via-secondary to-accent inline-block">Built for Business Impact.</span>
           </motion.h1>
-
+          
           <motion.p 
             variants={itemVariants}
             className="mt-6 text-lg md:text-2xl text-[color:var(--muted-foreground)] leading-relaxed"
           >
             From strategy to delivery, we engineer results — not just roadmaps.
           </motion.p>
-
+          
           <motion.div 
             variants={itemVariants}
             className="mt-10 flex justify-center gap-4 flex-col sm:flex-row"
@@ -144,7 +140,7 @@ const HeroSection = () => {
             </Link>
           </motion.div>
         </motion.div>
-
+        
         <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {differentiators.map((item, index) => (
             <motion.div 
@@ -169,7 +165,7 @@ const HeroSection = () => {
             </motion.div>
           ))}
         </div>
-
+        
         {/* Scroll indicator */}
         <motion.div 
           className="absolute bottom-10 left-1/2 transform -translate-x-1/2"

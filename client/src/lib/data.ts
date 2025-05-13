@@ -118,7 +118,7 @@ export const testimonials: Testimonial[] = [
 // Services
 export const services: Service[] = [
   {
-    id: "cloud",
+    id: "cloud-smart",
     icon: "fa-cloud",
     title: "Cloud-Smart, Not Cloud-Hungry",
     description: "FinOps-driven optimization that reduces costs while enhancing performance and scalability.",
@@ -129,7 +129,7 @@ export const services: Service[] = [
     ]
   },
   {
-    id: "ai",
+    id: "ai-first",
     icon: "fa-brain",
     title: "AI-First, Not Just AI-Enabled",
     description: "LLM-native tools, automation, and governance built to transform your business operations.",
@@ -173,7 +173,7 @@ export const services: Service[] = [
     ]
   },
   {
-    id: "security",
+    id: "security-delivery",
     icon: "fa-shield-alt",
     title: "Security-Embedded Delivery",
     description: "DevSecOps-first pipelines and automated compliance that protect your business at every level.",

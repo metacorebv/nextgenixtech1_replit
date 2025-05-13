@@ -4,7 +4,7 @@ import { InlineWidget } from 'react-calendly';
 
 export const CalendlyInline = () => {
   return (
-    <div id="book-meeting" className="w-full">
+    <div id="book-meeting" className="w-full scroll-mt-24">
       <h3 className="mt-4 text-xl font-semibold text-primary">Schedule a Free Tech Audit</h3>
       <div className="mt-6 rounded-2xl overflow-hidden border border-warm-gray-500">
         <InlineWidget

@@ -68,7 +68,7 @@ const Navbar = () => {
               <span className="ml-2 text-xl font-heading font-semibold text-foreground">NextGenixTech</span>
             </Link>
           </div>
-          
+
           {/* Desktop navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item, index) => (
@@ -106,7 +106,7 @@ const Navbar = () => {
               )
             ))}
           </div>
-          
+
           {/* Mobile menu button */}
           <div className="flex items-center md:hidden">
             <button 
@@ -120,7 +120,7 @@ const Navbar = () => {
               </svg>
             </button>
           </div>
-          
+
           {/* CTA Button - Desktop */}
           <div className="hidden md:flex items-center">
             <Button asChild className="rounded-2xl bg-gradient-to-r from-primary to-secondary hover:shadow-lg hover:shadow-primary/20 transition-all duration-300">
@@ -131,7 +131,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Mobile menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
@@ -173,7 +173,7 @@ const Navbar = () => {
                 </div>
               ))}
               <Link 
-                href="/contact"
+                href="/contact#book-meeting"
                 className="block px-3 py-2 rounded-md text-base font-medium text-white bg-gradient-to-r from-primary to-secondary hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >

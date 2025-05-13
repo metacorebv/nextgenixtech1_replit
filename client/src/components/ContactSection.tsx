@@ -102,10 +102,11 @@ const ContactSection = () => {
           
           <motion.div 
             variants={itemVariants}
-            className="bg-neutral-800 rounded-2xl p-8 shadow-lg"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-8"
           >
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="bg-neutral-800 rounded-2xl p-8 shadow-lg">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
@@ -192,15 +193,12 @@ const ContactSection = () => {
                 
                 <p className="mt-4 text-center text-warm-gray-300 text-sm">We respond with a personalized audit in 24 hours.</p>
               </form>
-            </Form>
-          </motion.div>
-          
-          <motion.div 
-            variants={itemVariants}
-            className="mt-12 text-center"
-          >
-            <p className="text-warm-gray-300">Prefer to schedule a call?</p>
-            <CalendlyInline />
+              </Form>
+            </div>
+            
+            <div className="bg-neutral-800 rounded-2xl p-8 shadow-lg">
+              <CalendlyInline />
+            </div>
           </motion.div>
         </div>
       </div>

@@ -29,6 +29,9 @@ import SecurityDeliveryPage from "@/pages/services/security-delivery";
 import HealthcareExpertisePage from "@/pages/services/healthcare";
 import LegalTechPage from "@/pages/services/legaltech";
 import DigitalMarketingPage from "@/pages/services/digital-marketing";
+import CareersPage from "@/pages/CareersPage";
+import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
+import TermsOfServicePage from "@/pages/TermsOfServicePage";
 
 // Admin pages
 import AdminDashboard from "@/pages/admin/AdminDashboard";
@@ -59,6 +62,10 @@ function Router() {
         <Route path="/industries/healthcare" component={HealthcarePage} />
         <Route path="/industries/legaltech" component={LegaltechPage} />
         <Route path="/industries/logistics" component={LogisticsPage} />
+        <Route path="/careers" component={CareersPage} />
+        <Route path="/privacy-policy" component={PrivacyPolicyPage} />
+        <Route path="/terms-of-service" component={TermsOfServicePage} />
+      
         
         {/* Admin routes */}
         <Route path="/admin" component={AdminDashboard} />

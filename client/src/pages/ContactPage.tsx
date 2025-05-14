@@ -56,11 +56,10 @@ const ContactPage = () => {
               <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
                 <i className="fas fa-location-dot text-primary text-xl"></i>
               </div>
-              <h3 className="text-xl font-heading font-semibold mb-4 text-[color:var(--foreground)]">Our Office</h3>
+              <h3 className="text-xl font-heading font-semibold mb-4 text-[color:var(--foreground)]">Our Main Office</h3>
               <p className="text-[color:var(--muted-foreground)]">
-                123 Tech Avenue<br />
-                Suite 500<br />
-                San Francisco, CA 94103
+                Amsterdam<br />
+                Netherlands, NL
               </p>
             </motion.div>
 
@@ -77,21 +76,15 @@ const ContactPage = () => {
               <h3 className="text-xl font-heading font-semibold mb-4 text-[color:var(--foreground)]">Email Us</h3>
               <div className="space-y-4">
                 <div>
-                  <p className="text-[color:var(--foreground)] font-medium">General Inquiries:</p>
+                  <p className="text-[color:var(--foreground)] font-medium">General Inquiries & Support:</p>
                   <a href="mailto:info@nextgenixtech.com" className="text-primary hover:text-primary/80 transition-colors">
-                    info@nextgenixtech.com
-                  </a>
-                </div>
-                <div>
-                  <p className="text-[color:var(--foreground)] font-medium">Support:</p>
-                  <a href="mailto:support@nextgenixtech.com" className="text-primary hover:text-primary/80 transition-colors">
-                    support@nextgenixtech.com
+                  connect.nextgenixtech@gmail.com
                   </a>
                 </div>
               </div>
             </motion.div>
-
-            {/* Phone Contact */}
+            
+            {/* Community Support Channels */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -99,20 +92,28 @@ const ContactPage = () => {
               className="bg-[color:var(--card)] p-8 rounded-2xl border border-[color:var(--border)] hover:shadow-lg transition-all"
             >
               <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
-                <i className="fas fa-phone text-primary text-xl"></i>
+                <i className="fas fa-comments text-primary text-xl"></i>
               </div>
-              <h3 className="text-xl font-heading font-semibold mb-4 text-[color:var(--foreground)]">Call Us</h3>
-              <div className="space-y-4">
+              <h3 className="text-xl font-heading font-semibold mb-4 text-[color:var(--foreground)]">Support Channels</h3>
+              <div className="space-y-6">
                 <div>
-                  <p className="text-[color:var(--foreground)] font-medium">Main Office:</p>
-                  <a href="tel:+14155557890" className="text-primary hover:text-primary/80 transition-colors">
-                    +1 (415) 555-7890
+                  <div className="flex items-center mb-2">
+                    <i className="fab fa-discord text-[#5865F2] text-xl mr-2"></i>
+                    <p className="text-[color:var(--foreground)] font-medium">Discord Community:</p>
+                  </div>
+                  <a href="https://discord.gg/nextgenixtech" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 transition-colors flex items-center">
+                    <span>Join our Discord Server</span>
+                    <i className="fas fa-external-link-alt text-xs ml-1"></i>
                   </a>
                 </div>
                 <div>
-                  <p className="text-[color:var(--foreground)] font-medium">Sales Team:</p>
-                  <a href="tel:+14155557891" className="text-primary hover:text-primary/80 transition-colors">
-                    +1 (415) 555-7891
+                  <div className="flex items-center mb-2">
+                    <i className="fab fa-slack text-[#4A154B] text-xl mr-2"></i>
+                    <p className="text-[color:var(--foreground)] font-medium">Slack Workspace:</p>
+                  </div>
+                  <a href="https://nextgenixtech.slack.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 transition-colors flex items-center">
+                    <span>Connect on Slack</span>
+                    <i className="fas fa-external-link-alt text-xs ml-1"></i>
                   </a>
                 </div>
               </div>

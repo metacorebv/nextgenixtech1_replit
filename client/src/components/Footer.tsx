@@ -30,10 +30,10 @@ const Footer = () => {
             <h3 className="text-lg font-heading font-semibold text-[color:var(--foreground)] mb-4">Services</h3>
             <ul className="space-y-3">
               {[
-                "Cloud Optimization",
-                "AI-First Solutions",
-                "Outcome-Based Engagements",
-                "Security-Embedded Delivery"
+                { name: "Cloud Optimization", path: "/services/cloud-smart" },
+                { name: "AI-First Solutions", path: "/services/ai-first" },
+                { name: "Outcome-Based Engagements", path: "/services/outcome-based" },
+                { name: "Security-Embedded Delivery", path: "/services/security-delivery" }
               ].map((service, index) => (
                 <motion.li
                   key={index}
@@ -41,10 +41,10 @@ const Footer = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
-                  <Link href={`/services/${service.toLowerCase().replace(/\s+/g, '-')}`}>
-                    <a className="text-[color:var(--muted-foreground)] hover:text-primary transition-colors">
-                      {service}
-                    </a>
+                  <Link href={service.path}>
+                    <span className="text-[color:var(--muted-foreground)] hover:text-primary transition-colors cursor-pointer">
+                      {service.name}
+                    </span>
                   </Link>
                 </motion.li>
               ))}
@@ -56,10 +56,10 @@ const Footer = () => {
             <h3 className="text-lg font-heading font-semibold text-[color:var(--foreground)] mb-4">Industries</h3>
             <ul className="space-y-3">
               {[
-                "Fintech",
-                "Healthcare",
-                "LegalTech",
-                "Logistics"
+                { name: "Fintech", path: "/industries/fintech" },
+                { name: "Healthcare", path: "/industries/healthcare" },
+                { name: "LegalTech", path: "/industries/legaltech" },
+                { name: "Logistics", path: "/industries/logistics" }
               ].map((industry, index) => (
                 <motion.li
                   key={index}
@@ -67,10 +67,10 @@ const Footer = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
-                  <Link href={`/industries/${industry.toLowerCase()}`}>
-                    <a className="text-[color:var(--muted-foreground)] hover:text-primary transition-colors">
-                      {industry}
-                    </a>
+                  <Link href={industry.path}>
+                    <span className="text-[color:var(--muted-foreground)] hover:text-primary transition-colors cursor-pointer">
+                      {industry.name}
+                    </span>
                   </Link>
                 </motion.li>
               ))}
@@ -84,8 +84,7 @@ const Footer = () => {
               {[
                 { name: "Contact Us", path: "/contact" },
                 { name: "Careers", path: "/careers" },
-                { name: "Resources", path: "/resources" },
-                { name: "Blog", path: "/blog" }
+                { name: "Resources", path: "/resources" }
               ].map((item, index) => (
                 <motion.li
                   key={index}
@@ -94,9 +93,9 @@ const Footer = () => {
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
                   <Link href={item.path}>
-                    <a className="text-[color:var(--muted-foreground)] hover:text-primary transition-colors">
+                    <span className="text-[color:var(--muted-foreground)] hover:text-primary transition-colors cursor-pointer">
                       {item.name}
-                    </a>
+                    </span>
                   </Link>
                 </motion.li>
               ))}
@@ -112,15 +111,6 @@ const Footer = () => {
           <div className="flex items-center space-x-6">
             <div className="flex items-center space-x-4 mr-6">
               <a 
-                href="https://nextgenixtech.slack.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-[color:var(--muted-foreground)] hover:text-primary transition-colors"
-              >
-                <i className="fab fa-slack text-xl"></i>
-                <span className="sr-only">Slack</span>
-              </a>
-              <a 
                 href="https://discord.gg/nextgenixtech" 
                 target="_blank" 
                 rel="noopener noreferrer" 
@@ -129,9 +119,26 @@ const Footer = () => {
                 <i className="fab fa-discord text-xl"></i>
                 <span className="sr-only">Discord</span>
               </a>
+              <a 
+                href="https://nextgenixtech.slack.com" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-[color:var(--muted-foreground)] hover:text-primary transition-colors"
+              >
+                <i className="fab fa-slack text-xl"></i>
+                <span className="sr-only">Slack</span>
+              </a>
             </div>
-            <a href="#" className="text-[color:var(--muted-foreground)] hover:text-primary transition-colors text-sm">Privacy Policy</a>
-            <a href="#" className="text-[color:var(--muted-foreground)] hover:text-primary transition-colors text-sm">Terms of Service</a>
+            <Link href="/privacy-policy">
+              <span className="text-[color:var(--muted-foreground)] hover:text-primary transition-colors text-sm cursor-pointer">
+                Privacy Policy
+              </span>
+            </Link>
+            <Link href="/terms-of-service">
+              <span className="text-[color:var(--muted-foreground)] hover:text-primary transition-colors text-sm cursor-pointer">
+                Terms of Service
+              </span>
+            </Link>
           </div>
         </div>
       </div>
